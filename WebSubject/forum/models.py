@@ -12,7 +12,7 @@ class Index(models.Model):
 # 组织表-书社
 class Organize(models.Model):
     o_id = models.CharField(verbose_name="组织ID", unique=True, max_length=20)
-
+    """要一个访问限制"""
 
 # 帖子表 用于社区的书单，帖子，书籍的长回复
 class Topic(models.Model):

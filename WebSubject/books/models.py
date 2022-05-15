@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import models
+from django.contrib.auth.models import User
 from django.db import models
 from tags.models import Tag
 
@@ -16,10 +16,6 @@ class Book(models.Model):
    
     def __str__(self):
         return self.title
-
-    def get_absolute_url(self):
-        # return /post/pk=self.pk/
-        return reverse('book', kwargs={'pk': self.pk})
 
 class Series(models.Model):
     title = models.CharField(max_length=80, verbose_name='系列名称')
@@ -49,9 +45,6 @@ class Chapter(models.Model):
 
     def __str__(self):
         return self.title
-
-    def get_absolute_url(self):
-        return reverse('chapter',kwargs={'pk':self.pk})
 
 """Publication information 出版信息"""
 class Pubinfo(models.Model):
