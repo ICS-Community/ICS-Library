@@ -1,0 +1,42 @@
+{% extends "forum/base.html" %}
+
+{% block main %}
+<h3>图书详情</h3>
+<hr/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <div class="jumbotron">
+            <h2>{{ book.title }}</h2>
+            {# 图书的图片 #}
+            <ul>
+                <li>作者：{{book.author}}</li>
+                <li>语言：{{book.language}}</li>
+                <li>标签：
+                    <ul>
+                    {% for tag in tags %}
+                    <li>{{tag.title}}</li>
+                    {% endfor %}
+                    </ul>
+                </li>
+                
+            </ul>
+            <h3>简介</h3>
+            <P>{{book.intro}}</P>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <h3>章节目录</h3>
+    <hr/>
+    <div class="row">
+        {% for chapter in chapters %}
+        <div>
+           <a href="{% url 'books:chapter' book.id chapter.id%}" role="button" style="width: 100%; font-size: 11px">{{ chapter.title}}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

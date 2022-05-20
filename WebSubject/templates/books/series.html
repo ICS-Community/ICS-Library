@@ -1,0 +1,27 @@
+{% extends "forum/base.html" %}
+
+{% block main %}
+<h3>系列详情</h3>
+<hr/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            <div class="jumbotron">
+            <h2>{{ series.title }}&nbsp&nbsp&nbsp&nbsp&nbsp</h2>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <h3>书籍列表</h3>
+    <hr/>
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4">
+           <a class="btn btn-default" href="{% url 'books:book_detail' book.id %}" role="button" style="width: 100%; font-size: 11px">{{ book.title}}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

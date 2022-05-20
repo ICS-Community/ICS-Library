@@ -1,5 +1,12 @@
 {% extends "forum/base.html" %}
 
 {% block main %}
-    <p>书库主页</p>
+    <h2>ICS-Library</h2>
+    <hr/>
+    <h2>书籍列表</h2>
+    {% for book in books %}
+    <div class="col-md-4">
+       <a class="btn btn-default" href="{% url 'books:book_detail' book.id %}" role="button" style="width: 100%; font-size: 11px">{{ book.title}}</a>
+    </div>
+    {% endfor %}
 {% endblock %}

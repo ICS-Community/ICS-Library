@@ -1,32 +1,34 @@
-from django.urls import path, re_path
+from django.urls import path, path
 from . import views
 
 app_name = 'books'
 
 urlpatterns = [
+    # path自动匹配最长匹配项 repath匹配第一个匹配项
+
+    # 书库的主页，显示标签和一些书籍
     path('', views.index, name='index'),
-    # 显示所有的标签
-    # re_path(r'^tags/$', views.topics, name='topics'),与下句等价
-    path('tags/', views.topics, name='topics' ),
 
-    # 特定主题的详细页面
-    re_path('topics/(?P<topic_id>\d+)/', views.topic, name='topic'),
+    # 书籍的详细页面
+    path('book/<int:book_id>/', views.book_detail, name='book_detail'),
 
-    # 用于添加新主题的网页
-    path('new_topic/', views.new_topic, name='new_topic'),
+    # 系列的详细页面
+    path('series/<int:series_id>/', views.series_detail, name='series_detail'),
 
-    # 用于添加新条目的页面
-    re_path('new_entry/(?P<topic_id>\d+)/', views.new_entry, name='new_entry'),
+    # 章节内容页面
+    path('book/<int:book_id>/<int:chapter_id>/', views.chapter, name='chapter'),
 
-    # 用于编辑条目的页面
-    re_path('edit_entry/(?P<entry_id>\d+)/', views.edit_entry, name='edit_entry'),
+    # # 搜索页面
+    # path('search/', views.search, name='search'),
 
-    # 用于显示个人所有的主题
-    path('my_topics/', views.my_topics, name='my_topics'),
+    # 编辑页面即包含添加，删除
+    # 用于编辑章节的页面
+    path('edit_chapter/<int:book_id>/<int:chapter_id>/', views.edit_chapter, name='edit_chapter'),
 
-    # 用于删除自有条目的页面
-    re_path('delete_entry/(?P<entry_id>\d+)/', views.delete_entry, name='delete_entry'),
+    # # 用于编辑好句的页面
+    # path('edit_gsent/<int:book_id>/', views.edit_g_sentence, name='edit_gsent'),
 
-    # 用于删除自有主题的页面
-    re_path('delete_topic/(?P<topic_id>\d+)/', views.delete_topic, name='delete_topic'),
+    # 用于编辑标签的页面
+
+
 ]

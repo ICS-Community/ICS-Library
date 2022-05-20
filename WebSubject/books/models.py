@@ -37,6 +37,11 @@ class Starts(models.Model):
     def __str__(self):
         return self.book.title
 
+
+"""
+建立一个新的模型，用于存储目录结构。
+"""
+
 class Chapter(models.Model):
     b_id = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
     number = models.IntegerField(verbose_name='章节号')
@@ -45,6 +50,10 @@ class Chapter(models.Model):
 
     def __str__(self):
         return self.title
+
+class g_sentence():
+    b_id = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
+    content = models.TextField(verbose_name='内容')
 
 """Publication information 出版信息"""
 class Pubinfo(models.Model):
