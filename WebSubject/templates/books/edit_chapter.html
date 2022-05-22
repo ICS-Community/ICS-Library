@@ -1,15 +1,12 @@
 {% extends "books/base.html" %}
 {% block main %}
-  <h2>编辑条目</h2>
-  <h3><a href="{% url 'books:book' book.id %}">{{ book }}</a></h3>
+  <h2>编辑章节</h2>
+  <h3><a href="{% url 'books:book_detail' book.id %}">{{ book }}</a>-{{ chapter }}</h3>
 
-  <form role="form" action="{% url 'books:edit_chapter' book.id chapter.id %}" method="POST" class="form">
+  <form role="form" action="{% url 'books:edit_chapter' book.id chapter.id %}" method="POST">
     {% csrf_token %}
     {{ form.media }}
-
-    {% buttons %}
-      <button name="submit" class="btn btn-primary" style="display:block;margin:0 auto">保存更改</button>
-    {% endbuttons %}
+    <button name="submit">保存更改</button>
   </form>
   
 {% endblock %}

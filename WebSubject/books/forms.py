@@ -10,6 +10,6 @@ from .models import *
 class ChapterForm(forms.ModelForm):
     class Meta:
         model = Chapter
-        fields = ['text']
-        labels = {'text':''}
-        widgets = {'text': forms.Textarea(attrs={'cols':80})}
+        fields = ['content']
+        labels = {'content':'章节'}
+        widgets = {'content': forms.Textarea(attrs={'cols':80})}

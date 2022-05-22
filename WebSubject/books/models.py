@@ -5,7 +5,8 @@ from tags.models import Tag
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=80, verbose_name='书名') # 实际上好吧，中英文字符数量真的不好评价，回头再改吧
+    # 实际上好吧，中英文字符数量真的不好评价，回头再改吧
+    title = models.CharField(max_length=80, verbose_name='书名')
     cover = models.ImageField(upload_to='cover/', null=True, blank = True, verbose_name='封面') 
     author =  models.ManyToManyField(User, verbose_name='作者') # 多对多关系
     language = models.CharField(max_length=50, verbose_name='语言')

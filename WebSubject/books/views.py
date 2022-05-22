@@ -39,22 +39,24 @@ def chapter(request, book_id, chapter_id):
 # @login_required
 def edit_chapter(request, book_id, chapter_id):
     '''编辑既有章节'''
-    chapter = Chapter.objects.get(id=chapter_id)
-    book = chapter.b_id
+    chapter = get_object_or_404(Chapter, id=chapter_id)
+    book = get_object_or_404(Book, id=book_id)
     # check_topic_owner(topic, request)
 
     if request.method != 'POST':
         # 初次请求，使用当前条目填充表单
-        form = ChapterForm(instance=entry)
+        form = ChapterForm(instance=chapter)
     else:
         # POST提交的数据，对数据进行处理
-        form = ChapterForm(instance=entry, data=request.POST)
+        form = ChapterForm(instance=chapter, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('books:book_detail',args=[book.id]))
+            return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
     
     context = {'chapter': chapter, 'book': book, 'form': form}
-    return render(request, 'books/index.html', context)
+    return render(request, 'books/edit_chapter.html', context)
+
+
 
 # def search(request):
 #     '''搜索页'''
