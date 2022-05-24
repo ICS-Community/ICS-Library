@@ -18,6 +18,7 @@ def book_detail(request, book_id):
     '''显示书籍的详细信息'''
     book = get_object_or_404(Book, id=book_id)
     chapters = book.chapter_set.order_by('number')
+    authors = book.author.all().order_by('username')
     tags = book.tags.all().order_by('title')
     series = None
     if book.series != None:
@@ -26,7 +27,7 @@ def book_detail(request, book_id):
         la_chapter = 0
     else:
         la_chapter = chapters[len(chapters)-1]
-    context = {'book':book, 'series':series, 'chapters':chapters, 'tags':tags, 'la_chapter':la_chapter,}
+    context = {'book':book, 'authors':authors, 'series':series, 'chapters':chapters, 'tags':tags, 'la_chapter':la_chapter,}
     return render(request, 'books/book.html', context)
 
 def series_detail(request, series_id):
@@ -68,23 +69,22 @@ def add_book(request):
 
 # @login_required
 def edit_book(request, book_id):
-    '''编辑既有章节'''
-    chapter = get_object_or_404(Chapter, id=chapter_id)
+    '''编辑既有书籍'''
     book = get_object_or_404(Book, id=book_id)
     # check_topic_owner(topic, request)
 
     if request.method != 'POST':
         # 初次请求，使用当前条目填充表单
-        form = ChapterForm(instance=chapter)
+        form = BookForm(instance=book)
     else:
         # POST提交的数据，对数据进行处理
-        form = ChapterForm(instance=chapter, data=request.POST)
+        form = BookForm(instance=book, data=request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
     
-    context = {'chapter': chapter, 'book': book, 'form': form}
-    return render(request, 'books/edit_chapter.html', context)
+    context = {'book': book, 'form': form}
+    return render(request, 'books/edit_book.html', context)
 
 # @login_required
 def add_chapter(request, book_id):

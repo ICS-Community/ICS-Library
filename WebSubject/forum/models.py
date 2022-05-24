@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from books.models import Book
+from django.contrib.auth.models import User
+from tags.models import Tag
 
 class Index(models.Model):
     """首页书籍展示表"""
@@ -15,21 +17,25 @@ class Organize(models.Model):
     """要一个访问限制"""
 
 # 帖子表 用于社区的书单，帖子，书籍的长回复
-class Topic(models.Model):
-    # t_id = models.CharField(verbose_name='帖子id', max_length=16)
-    t_uid = models.CharField(verbose_name='帖子所属用户id', max_length=16)
-    t_kind = models.CharField(verbose_name='类别', max_length=32)
+class Content(models.Model):
+    t_id = models.CharField(verbose_name='指向内容的id', max_length=16, null=True, blank = True) # 如果不为空的话就是帖子，如果为空的话就是专栏或书单
+    t_user =  models.ForeignKey(User, verbose_name='作者', null=True, blank = True, on_delete=models.SET_NULL)
+    tags = models.ManyToManyField(Tag, verbose_name='标签') # 注意,帖子，专栏，书单就是用这个来分类的哒。
     create_time = models.DateField(verbose_name='创建时间', auto_now_add=True)
-    t_photo = models.CharField(verbose_name='帖子图片', max_length=128, null=True)
-    t_content = models.CharField(verbose_name='帖子正文', max_length=3000)
-    t_title = models.CharField(verbose_name='帖子标题', max_length=64)
-    t_introduce = models.CharField(verbose_name='帖子简介', max_length=256)
-    recommend = models.BooleanField(verbose_name='是否推荐', default=False)
+    # t_photo = models.CharField(verbose_name='帖子图片', max_length=128, null=True)
+    content = models.CharField(verbose_name='正文', max_length=3000)
+    title = models.CharField(verbose_name='标题', max_length=64)
+    intro = models.CharField(verbose_name='内容摘要', max_length=256, null=True, blank = True) # 如果为空的话就默认使用内容前五十个字符。
+
+    def __str__(self):
+        return self.title
+    
+    # 定义一个函数返回内容的前50个字符
 
 # 回复表
 class Reply(models.Model):
     r_tid = models.CharField(verbose_name='帖子id', max_length=16)
     r_uid = models.CharField(verbose_name='发表者id', max_length=16)
-    r_photo = models.CharField(verbose_name='回复的图片', max_length=128, null=True)
+    # r_photo = models.CharField(verbose_name='回复的图片', max_length=128, null=True)
     r_time = models.DateField(verbose_name='留言时间', auto_now_add=True)
     r_content = models.CharField(verbose_name='回复内容', max_length=256)

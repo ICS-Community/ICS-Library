@@ -1,0 +1,12 @@
+{% extends "books/base.html" %}
+{% block main %}
+  <h2>编辑书籍</h2>
+  <h3>{{ book }}</a></h3>
+
+  <form role="form" action="{% url 'books:edit_book' book.id %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">保存更改</button>
+  </form>
+  
+{% endblock %}

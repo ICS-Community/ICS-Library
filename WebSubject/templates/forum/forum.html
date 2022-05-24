@@ -1,0 +1,12 @@
+{% extends "books/base.html" %}
+
+{% block main %}
+    <h2>轮回书库-论坛</h2>
+    <hr/>
+    <h2>帖子列表</h2>
+    {% for content in contents %}
+    <div>
+       <a href="{% url 'forum:topic_detail' content.id %}">{{content}}</a>
+    </div>
+    {% endfor %}
+{% endblock %}

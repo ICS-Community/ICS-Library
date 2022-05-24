@@ -1,4 +1,4 @@
-{% extends "forum/base.html" %}
+{% extends "books/base.html" %}
 
 {% block main %}
 <a href="{% url 'books:index' %}">Library</a>
@@ -8,7 +8,13 @@
     <h2>{{ book.title }}</h2>
     {# 图书的图片 #}
     <ul>
-        <li>作者：{{book.author}}</li>
+        <li>作者：
+            <ul>
+                {% for author in authors %}
+                <li>{{author}}</li>
+                {% endfor %}
+            </ul>
+        </li>
         <li>语言：{{book.language}}</li>
         {% if series != None %}
         <li>系列：<a href="{% url 'books:series_detail' series.id %}">{{series}}</a></li>
@@ -25,6 +31,7 @@
         {% else %}
         <li>最新章节：{{la_chapter}}</li>
         {% endif %}
+        <li><a href="{% url 'books:edit_book' book.id %}">编辑本书</a></li>
     </ul>
     <h3>简介</h3>
     <P>{{book.intro}}</P>

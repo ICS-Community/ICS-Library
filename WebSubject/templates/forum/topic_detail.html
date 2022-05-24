@@ -1,0 +1,23 @@
+{% extends "books/base.html" %}
+
+{% block main %}
+<h3>帖子详情</h3>
+<hr />
+<div>
+    <h2>{{ topic.title }}</h2>
+    {# 图书的图片 #}
+    <ul>
+        <li>楼主：{{topic.t_user}}</li>
+        <li>标签：
+            <ul>
+                {% for tag in tags %}
+                <li>{{tag.title}}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        <li><a href="{% url 'forum:edit_topic' topic.id %}">编辑帖子</a></li>
+    </ul>
+    <h3>正文</h3>
+    <P>{{topic.content}}</P>
+</div>
+{% endblock %}

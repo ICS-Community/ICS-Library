@@ -1,0 +1,11 @@
+{% extends "books/base.html" %}
+{% block main %}
+  <h2>添加书籍</h2>
+
+  <form role="form" action="{% url 'books:add_book' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">保存更改</button>
+  </form>
+  
+{% endblock %}

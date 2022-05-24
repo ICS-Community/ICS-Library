@@ -1,4 +1,4 @@
-{% extends "forum/base.html" %}
+{% extends "books/base.html" %}
 
 {% block main %}
     <h2>ICS-Library</h2>
@@ -6,7 +6,7 @@
     <h2>书籍列表</h2>
     {% for book in books %}
     <div class="col-md-4">
-       <a class="btn btn-default" href="{% url 'books:book_detail' book.id %}" role="button" style="width: 100%; font-size: 11px">{{ book.title}}</a>
+       <a href="{% url 'books:book_detail' book.id %}">{{ book.title}}</a>
     </div>
     {% endfor %}
 {% endblock %}
