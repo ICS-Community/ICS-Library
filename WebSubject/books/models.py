@@ -13,6 +13,7 @@ class Book(models.Model):
     intro = models.TextField(verbose_name='简介')
     series = models.ForeignKey('Series', verbose_name = '系列', null=True, blank = True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(Tag, verbose_name='标签') # 注意添加书籍时默认添加books标签
+    latest_c_num = models.IntegerField(verbose_name='最新章节号', default=0)
     if_pub = models.BooleanField(verbose_name='是否出版')
    
     def __str__(self):

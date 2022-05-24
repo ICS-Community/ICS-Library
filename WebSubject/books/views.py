@@ -19,7 +19,14 @@ def book_detail(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     chapters = book.chapter_set.order_by('number')
     tags = book.tags.all().order_by('title')
-    context = {'book':book, 'chapters':chapters, 'tags':tags}
+    series = None
+    if book.series != None:
+        series = book.series
+    if(len(chapters)==0):
+        la_chapter = 0
+    else:
+        la_chapter = chapters[len(chapters)-1]
+    context = {'book':book, 'series':series, 'chapters':chapters, 'tags':tags, 'la_chapter':la_chapter,}
     return render(request, 'books/book.html', context)
 
 def series_detail(request, series_id):
@@ -35,6 +42,74 @@ def chapter(request, book_id, chapter_id):
     chapter = get_object_or_404(Chapter, id=chapter_id)
     context = {'book':book, 'chapter':chapter}
     return render(request, 'books/chapter.html', context)
+
+# @login_required
+def add_book(request):
+    '''添加新的书籍'''
+    # 检查所有权
+
+    if request.method != 'POST':
+        # 未提交数据，创建一个新表单
+        form = BookForm()
+
+    else:
+        # POST提交的数据，对数据进行处理
+        form = BookForm(data=request.POST)
+        if form.is_valid():
+            new_book = form.save(commit=False)
+            # 在前端强制选中书籍标签Javascript实现
+            # b_tag = Tag.objects.get(tid=books)
+            # new_book.tags.add(b_tag)
+            new_book.save()
+            return HttpResponseRedirect(reverse('books:book_detail',args=[new_book.id]))
+    
+    context = {'book':new_book, 'form':form}
+    return render(request, 'books/add_book.html', context)
+
+# @login_required
+def edit_book(request, book_id):
+    '''编辑既有章节'''
+    chapter = get_object_or_404(Chapter, id=chapter_id)
+    book = get_object_or_404(Book, id=book_id)
+    # check_topic_owner(topic, request)
+
+    if request.method != 'POST':
+        # 初次请求，使用当前条目填充表单
+        form = ChapterForm(instance=chapter)
+    else:
+        # POST提交的数据，对数据进行处理
+        form = ChapterForm(instance=chapter, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
+    
+    context = {'chapter': chapter, 'book': book, 'form': form}
+    return render(request, 'books/edit_chapter.html', context)
+
+# @login_required
+def add_chapter(request, book_id):
+    '''在特定的书籍中添加新的章节'''
+    book = get_object_or_404(Book, id=book_id)
+    # 检查所有权
+
+    if request.method != 'POST':
+        # 未提交数据，创建一个新表单
+        form = ChapterForm()
+
+    else:
+        # POST提交的数据，对数据进行处理
+        form = ChapterForm(data=request.POST)
+        if form.is_valid():
+            new_chapter = form.save(commit=False)
+            new_chapter.b_id = book
+            new_chapter.number = book.latest_c_num + 1
+            book.latest_c_num = new_chapter.number
+            book.save()
+            new_chapter.save()
+            return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
+    
+    context = {'book':book, 'form':form}
+    return render(request, 'books/add_chapter.html', context)
 
 # @login_required
 def edit_chapter(request, book_id, chapter_id):
@@ -84,27 +159,7 @@ def edit_chapter(request, book_id, chapter_id):
 #     context={'form':form}
 #     return render(request, 'books/index.html', context)
 
-# @login_required
-# def new_entry(request, topic_id):
-#     '''在特定的主题中添加新条目'''
-#     topic = Topic.objects.get(id=topic_id)
-#     check_topic_owner(topic, request)
 
-#     if request.method != 'POST':
-#         # 未提交数据，创建一个新表单
-#         form = EntryForm()
-
-#     else:
-#         # POST提交的数据，对数据进行处理
-#         form = EntryForm(data=request.POST)
-#         if form.is_valid():
-#             new_entry = form.save(commit=False)
-#             new_entry.topic = topic
-#             new_entry.save()
-#             return HttpResponseRedirect(reverse('learning_logs:topic',args=[topic_id]))
-    
-#     context = {'topic':topic, 'form':form}
-#     return render(request, 'books/index.html', context)
 
 
 # @login_required

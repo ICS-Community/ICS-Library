@@ -1,15 +1,15 @@
 from django import forms
 from .models import *
 
-# class TopicForm(forms.ModelForm):
-#     class Meta:
-#         model = Topic
-#         fields = ['text']
-#         labels = {'text':''}
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'language', 'series', 'intro', 'tags', 'if_pub']
+        labels = {'title':'书名', 'language':'语言', 'series':'系列', 'intro':'简介', 'tags':'标签', 'if_pub':'是否出版'}
 
 class ChapterForm(forms.ModelForm):
     class Meta:
         model = Chapter
-        fields = ['content']
-        labels = {'content':'章节'}
+        fields = ['title', 'content']
+        labels = {'title':'章节名称', 'content':'章节内容'}
         widgets = {'content': forms.Textarea(attrs={'cols':80})}

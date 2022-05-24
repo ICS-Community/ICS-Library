@@ -20,8 +20,15 @@ urlpatterns = [
 
     # # 搜索页面
     # path('search/', views.search, name='search'),
+    
+    # 用于添加书籍的页面
+    path('add_book/', views.add_book, name='add_book'),
+    # 用于编辑书籍的页面
+    path('edit_book/<int:book_id>/', views.edit_book, name='edit_book'),
 
     # 编辑页面即包含添加，删除
+    # 用于添加章节的页面
+    path('add_chapter/<int:book_id>/', views.add_chapter, name='add_chapter'),
     # 用于编辑章节的页面
     path('edit_chapter/<int:book_id>/<int:chapter_id>/', views.edit_chapter, name='edit_chapter'),
 
