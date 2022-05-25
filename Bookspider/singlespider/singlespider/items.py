@@ -15,8 +15,11 @@ class NovelItem(scrapy.Item):
     serialstatus = scrapy.Field() # 状态
     serialnumber = scrapy.Field() # 连载字数
     tags = scrapy.Field() # 标签
+    intro = scrapy.Field()
     pass
 
 class ChapterItem(scrapy.Item):
-    
+    c_title = scrapy.Field()
+    c_content =scrapy.Field()
+    c_url = scrapy.Field()
     pass
