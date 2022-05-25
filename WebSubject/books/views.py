@@ -44,7 +44,7 @@ def chapter(request, book_id, chapter_id):
     context = {'book':book, 'chapter':chapter}
     return render(request, 'books/chapter.html', context)
 
-# @login_required
+@login_required
 def add_book(request):
     '''添加新的书籍'''
     # 检查所有权
@@ -67,7 +67,7 @@ def add_book(request):
     context = {'book':new_book, 'form':form}
     return render(request, 'books/add_book.html', context)
 
-# @login_required
+@login_required
 def edit_book(request, book_id):
     '''编辑既有书籍'''
     book = get_object_or_404(Book, id=book_id)
@@ -86,7 +86,7 @@ def edit_book(request, book_id):
     context = {'book': book, 'form': form}
     return render(request, 'books/edit_book.html', context)
 
-# @login_required
+@login_required
 def add_chapter(request, book_id):
     '''在特定的书籍中添加新的章节'''
     book = get_object_or_404(Book, id=book_id)
@@ -111,7 +111,7 @@ def add_chapter(request, book_id):
     context = {'book':book, 'form':form}
     return render(request, 'books/add_chapter.html', context)
 
-# @login_required
+@login_required
 def edit_chapter(request, book_id, chapter_id):
     '''编辑既有章节'''
     chapter = get_object_or_404(Chapter, id=chapter_id)
@@ -138,55 +138,3 @@ def edit_chapter(request, book_id, chapter_id):
 #     return render(request, 'books/search.html')
 
 
-# @login_required
-# def new_topic(request):
-#     '''添加新主题'''
-#     if request.method != 'POST':
-#         # 未提交数据：创建一个新表单
-#         form = TopicForm()
-#     else:
-#         # POST提交的数据，对数据进行处理
-#         form = TopicForm(request.POST)
-#         if form.is_valid():
-#             new_topic = form.save(commit=False)
-#             new_topic.owner = request.user
-#             if request.POST.get('dropdown',None) == 'Public':
-#                 new_topic.public = True
-
-#             new_topic.save()
-#             return HttpResponseRedirect(reverse('learning_logs:topics'))
-
-#     context={'form':form}
-#     return render(request, 'books/index.html', context)
-
-
-
-
-# @login_required
-# def my_topics(request):
-#     '''显示用户个人所有的主题'''
-
-#     topics = Topic.objects.filter(owner=request.user, topic_hide=False).order_by('date_added')
-#     context = {'topics':topics}
-#     return render(request, 'books/index.html', context)
-
-# @login_required
-# def delete_entry(request, entry_id):
-#     '''删除选定条目'''
-#     entry = Entry.objects.get(id=entry_id)
-#     topic = entry.topic
-#     check_topic_owner(topic, request)
-#     entry.entry_hide = True
-#     entry.save()
-
-#     return HttpResponseRedirect(reverse('learning_logs:topic',args=[topic.id]))
-
-# @login_required
-# def delete_topic(request, topic_id):
-#     '''删除选定主题'''
-#     topic = Topic.objects.get(id=topic_id)
-#     check_topic_owner(topic, request)
-#     topic.topic_hide = True
-#     topic.save()
-    
-#     return HttpResponseRedirect(reverse('learning_logs:my_topics'))

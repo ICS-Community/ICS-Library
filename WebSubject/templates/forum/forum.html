@@ -3,10 +3,17 @@
 {% block main %}
     <h2>轮回书库-论坛</h2>
     <hr/>
+    <a href="{% url 'forum:add_ftopic' %}">发帖</a>
     <h2>帖子列表</h2>
     {% for content in contents %}
     <div>
        <a href="{% url 'forum:topic_detail' content.id %}">{{content}}</a>
+       {% if content.intro == None %}
+       <p>{{content.ffchar}}</p>
+       {% else %}
+       <p>{{content.intro}}</p>
+       {% endif %}
+       <hr/>
     </div>
     {% endfor %}
 {% endblock %}

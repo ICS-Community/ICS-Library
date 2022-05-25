@@ -2,7 +2,11 @@
 {% block main %}
   <h2>添加帖子</h2>
 
-  <form role="form" action="{% url 'forum:add_topic' %}" method="POST">
+  {% if topic_id == -1 %}
+  <form role="form" action="{% url 'forum:add_ftopic' %}" method="POST">
+  {% else %}
+  <form role="form" action="{% url 'forum:add_topic' topic_id %}" method="POST">
+  {% endif %}
     {% csrf_token %}
     {{ form.as_p }}
     <button name="submit">保存更改</button>

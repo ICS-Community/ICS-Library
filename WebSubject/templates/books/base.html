@@ -11,6 +11,13 @@
     <li><a href="{% url 'forum:index' %}">首页</a></li>
     <li><a href="{% url 'books:index' %}">Library</a></li>
     <li><a href="{% url 'forum:forum' %}">论坛</a></li>
+    {% if user.is_authenticated %}
+    <li>Hello, {{ user.username }}.</li>
+    <ul><li><a href="{% url 'users:logout' %}">log out</a></li></ul>
+    {% else %}
+    <li><a href="{% url 'users:login' %}">登录</a></li>
+    <li><a href="{% url 'users:register' %}">注册</a></li>
+    {% endif %}
   </ul>
   {% block main %}{% endblock %}
 </body>
