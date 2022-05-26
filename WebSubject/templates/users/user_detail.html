@@ -1,0 +1,35 @@
+{% extends "books/base.html" %}
+
+{% block main %}
+<h3>帖子详情</h3>
+<hr />
+<div>
+    <h2>{{ user }}</h2>
+    {# 用户头像 #}
+    <ul>
+        <li>昵称：{{profile.nickname}}</li>
+        {#<li>标签：
+            <ul>
+                {% for tag in tags %}
+                <li>{{tag.title}}</li>
+                {% endfor %}
+            </ul>
+        </li>#}
+    </ul>
+    <h3>书架</h3>
+    <div>
+        {% for u_bf in u_bfs %}
+        <div>
+            <h3>{{ u_bf }}</h3>
+            <P>{{ u_bf.intro }}</P>
+        </div>
+         <div>
+             {% for bf in bsbf[u_bf.title] %}
+                <h4><a href="{% url books:book_detail bf.b_id.id %}">{{bf.b_id}}</a></h4>
+             {% endfor %}
+         </div>
+        {% endfor %}
+    </div>
+   
+</div>
+{% endblock %}
