@@ -53,7 +53,7 @@ class Chapter(models.Model):
     def __str__(self):
         return self.title
 
-class g_sentence():
+class Gsentence(models.Model):
     b_id = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
     content = models.TextField(verbose_name='内容')
 

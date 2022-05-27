@@ -4,16 +4,20 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from .models import *
  
 def User_detail(request, u_id):
     user = get_object_or_404(User, id=u_id)
     profile = user.profile
-    u_bfs = user.bookshelf_set.order_by('title')
-    for u_bf in u_bfs:
-        bf = u_bf.b_bookshelf_set.order_by('b_id')
-        bsbf[ubf.title] = bf
-    context = {'user':user, 'profile':profile, 'u_bfs':u_bfs, 'bsbf':bsbf}
+    u_bfs = user.bookshelf_set.order_by('title') # 你的所有书架
+    context = {'user':user, 'profile':profile, 'u_bfs':u_bfs}
     return render(request, 'users/user_detail.html', context)
+
+def Book_list(request, u_id, bf_id):
+    bf = get_object_or_404(Bookshelf, id=bf_id)
+    books = bf.bookforbs_set.order_by('b_id')
+    context = {'bf':bf, 'books':books}
+    return render(request, 'users/book_list.html', context)
 
 # 注册
 class Register(View):

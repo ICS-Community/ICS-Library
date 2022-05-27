@@ -6,11 +6,11 @@ from tags.models import Tag
 
 class Profile(models.Model):
     # 个人信息相关，头像之类的。
-    u_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    u_id = models.OneToOneField(to = User, on_delete=models.CASCADE, verbose_name="用户ID")
     nickname = models.CharField(max_length=90, verbose_name="昵称")
     
     def __str__(self):
-        return self.nickname
+        return self.u_id.username
 
 class Bookshelf(models.Model):
     title = models.CharField(max_length=50,verbose_name='书架名称')
@@ -18,10 +18,12 @@ class Bookshelf(models.Model):
     intro = models.CharField(verbose_name='书架简介', max_length=256, null=True, blank = True) 
 
     def __str__(self):
-        return self.title
+        return (self.title + ' - ' + self.u_id.username)
 
-class B_bookshelf(models.Model):
+class Bookforbs(models.Model):
+    """用于存储书架上的书籍"""
     f_id = models.ForeignKey('Bookshelf', verbose_name='指向书架的id', on_delete=models.CASCADE)
     b_id = models.ForeignKey(Book, verbose_name='书籍ID', null=True, blank = True, on_delete=models.SET_NULL)
+    
     def __str__(self):
-        return self.b_id
+        return (self.b_id.title + ' - ' + self.f_id.__str__())

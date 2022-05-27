@@ -1,52 +1,34 @@
-#include <cstring>
 #include <iostream>
+#include <cstring>
 #include <algorithm>
-#include <cmath>
 
 using namespace std;
 
-typedef pair<double, double> PDD;
-const int N = 1010;
-const double eps = 1e-6, INF = 1e10;
+typedef long long LL;
 
-int n, d;
-PDD seg[N];
+const int N = 3e5 + 10;
+
+int n, m;
+LL s[N], que[N];
 
 int main()
 {
-    cin >> n >> d;
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; i++)
+        scanf("%lld", &s[i]), s[i] += s[i - 1];
 
-    bool success = true;
-
-    for (int i = 0; i < n; i++)
+    LL res = -1e18;
+    int hh = 0, tt = 0;
+    que[0] = 0;
+    for (int i = 1; i <= n; i++)
     {
-        int x, y;
-        cin >> x >> y;
-        if (y > d)
-        {
-            success = false;
-            break;
-        }
-        auto len = sqrt(d * d - y * y);
-        seg[i] = {x + len, x - len};
+        while (hh <= tt && i - que[hh] > m)
+            hh++;
+        res = max(res, s[i] - s[que[hh]]);
+        while (hh <= tt && s[que[tt]] >= s[i])
+            tt--;
+        que[++tt] = i;
     }
-
-    if (!success)
-        puts("-1");
-    else
-    {
-        sort(seg, seg + n);
-        int res = 0;
-        double last = -INF;
-        for (int i = 0; i < n; i++)
-        {
-            if (seg[i].second > last + eps)
-            {
-                res++;
-                last = seg[i].first;
-            }
-        }
-        cout << res << endl;
-    }
+    printf("%lld\n", res);
     return 0;
 }
