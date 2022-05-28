@@ -23,7 +23,7 @@ class DownnovelSpider(scrapy.Spider):
 
     def start_requests(self):
         url = 'https://www.xiashuyun.com/type/nan_0_0_allvisit_1.html'
-        yield Request(url, headers=self.headers)
+        yield scrapy.Request(url, headers=self.headers)
     
     #div_list = response.xpath("//div[@class='article']/div[@class='']/div[@class='']")
     # current_page = 1  #设置当前页
@@ -42,7 +42,7 @@ class DownnovelSpider(scrapy.Spider):
             page_num = re.search(r'allvisit_(\d+)', response.url).group(1)
             page_num = 'allvisit_' + str(int(page_num)+1)
             next_url = re.sub(r'allvisit_\d+', page_num, response.url)
-            yield Request(next_url, headers=self.headers)
+            yield scrapy.Request(next_url, headers=self.headers)
 
     def getBook(self, response, bnum):
         book = response
