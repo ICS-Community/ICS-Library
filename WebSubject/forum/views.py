@@ -39,7 +39,7 @@ def add_topic(request, topic_id=-1):
         form = TopicForm(data=request.POST)
         if form.is_valid():
             new_topic = form.save(commit=False)
-            new_topic.t_user = request.user
+            new_topic.author = request.user
             # 在前端强制选中帖子标签Javascript实现
             if topic_id == -1:
                 new_topic.save()
@@ -66,7 +66,10 @@ def edit_topic(request, topic_id):
         form = TopicForm(instance=topic, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic_id]))
+            if topic.t_id == None:
+                return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic_id]))
+            else:
+                return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.t_id.id]))
 
     context = {'topic': topic, 'form': form}
     return render(request, 'forum/edit_topic.html', context)

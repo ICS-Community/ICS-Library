@@ -101,7 +101,7 @@ def add_chapter(request, book_id):
         form = ChapterForm(data=request.POST)
         if form.is_valid():
             new_chapter = form.save(commit=False)
-            new_chapter.b_id = book
+            new_chapter.book = book
             new_chapter.number = book.latest_c_num + 1
             book.latest_c_num = new_chapter.number
             book.save()

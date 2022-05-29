@@ -174,7 +174,7 @@ class AccountTest(TestCase):
         self.assertNotEqual(blog_user, None)
         self.assertEqual(blog_user.check_password(data["new_password1"]), True)
 
-    def test_forget_password_email_not_user(self):
+    def test_forget_password_email_noauthor(self):
         data = dict(
             new_password1=self.new_test,
             new_password2=self.new_test,

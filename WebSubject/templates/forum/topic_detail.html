@@ -7,7 +7,7 @@
     <h2>{{ topic.title }}</h2>
     {# 图书的图片 #}
     <ul>
-        <li>楼主：{{topic.t_user}}</li>
+        <li>楼主：{{topic.author}}</li>
         <li>标签：
             <ul>
                 {% for tag in tags %}
@@ -26,7 +26,7 @@
             <h2>{{ topic.title }}</h2>
             {# 图书的图片 #}
             <ul>
-                <li>楼主：{{topic.t_user}}</li>
+                <li>楼主：{{topic.author}}</li>
                 <li>标签：
                     <ul>
                         {% for tag in tags %}

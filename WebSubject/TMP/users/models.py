@@ -11,7 +11,7 @@ class Profile(models.Model):
 class Bookshelf(models.Model):
     f_id = models.ForeignKey('Bookshelf', verbose_name='指向书架的id', null=True, blank = True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=50,verbose_name='书架名称')
-    b_id = models.ForeignKey(Book, verbose_name='书籍ID',on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, verbose_name='书籍ID',on_delete=models.CASCADE)
     u_id = models.ForeignKey(User, verbose_name='所有者', null=True, blank = True, on_delete=models.SET_NULL)
     intro = models.CharField(verbose_name='书架简介', max_length=256, null=True, blank = True) 
 

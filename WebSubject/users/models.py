@@ -23,7 +23,7 @@ class Bookshelf(models.Model):
 class Bookforbs(models.Model):
     """用于存储书架上的书籍"""
     f_id = models.ForeignKey('Bookshelf', verbose_name='指向书架的id', on_delete=models.CASCADE)
-    b_id = models.ForeignKey(Book, verbose_name='书籍ID', null=True, blank = True, on_delete=models.SET_NULL)
+    book = models.ForeignKey(Book, verbose_name='书籍ID', null=True, blank = True, on_delete=models.SET_NULL)
     
     def __str__(self):
-        return (self.b_id.title + ' - ' + self.f_id.__str__())
+        return (self.book.title + ' - ' + self.f_id.__str__())

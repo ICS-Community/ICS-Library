@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth import geauthor_model, password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import widgets
@@ -32,12 +32,12 @@ class RegisterForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if get_user_model().objects.filter(email=email).exists():
+        if geauthor_model().objects.filter(email=email).exists():
             raise ValidationError("该邮箱已经存在.")
         return email
 
     class Meta:
-        model = get_user_model()
+        model = geauthor_model()
         fields = ("username", "email")
 
 

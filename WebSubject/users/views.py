@@ -15,7 +15,7 @@ def User_detail(request, u_id):
 
 def Book_list(request, u_id, bf_id):
     bf = get_object_or_404(Bookshelf, id=bf_id)
-    books = bf.bookforbs_set.order_by('b_id')
+    books = bf.bookforbs_set.order_by('book')
     context = {'bf':bf, 'books':books}
     return render(request, 'users/book_list.html', context)
 

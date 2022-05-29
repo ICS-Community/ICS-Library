@@ -44,8 +44,13 @@ class Starts(models.Model):
 建立一个新的模型，用于存储目录结构。
 """
 
+class Section(models.Model):
+    '''小说分卷，分节信息'''
+    book = models.ForeignKey('Book', verbose_name='分节信息', on_delete=models.CASCADE)
+
+
 class Chapter(models.Model):
-    b_id = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
+    book = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
     number = models.IntegerField(verbose_name='章节号')
     title = models.CharField(max_length=50,verbose_name='章节名')
     content = models.TextField(verbose_name='内容')
@@ -54,13 +59,13 @@ class Chapter(models.Model):
         return self.title
 
 class Gsentence(models.Model):
-    b_id = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
+    book = models.ForeignKey('Book', verbose_name='书籍ID',on_delete=models.CASCADE)
     content = models.TextField(verbose_name='内容')
 
 """Publication information 出版信息"""
 class Pubinfo(models.Model):
     """有的东西要改为一对多键值，回头吧"""
-    b_id = models.ForeignKey('Book', verbose_name='书籍ID', on_delete=models.CASCADE)
+    book = models.ForeignKey('Book', verbose_name='书籍ID', on_delete=models.CASCADE)
     isbn = models.CharField(max_length=15, verbose_name='ISBN')
     publisher = models.CharField(max_length = 20, blank = True, verbose_name='出版社')
     seller = models.CharField(max_length = 20, blank = True, verbose_name='出品方')
