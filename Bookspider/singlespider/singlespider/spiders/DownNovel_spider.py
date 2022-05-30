@@ -30,12 +30,13 @@ class DownnovelSpider(scrapy.Spider):
 
     def parse(self, response):
         # 获取当前页面的所有书籍
+        # Print("开始新的一页")
         books = response.xpath("//div[@id='waterfall']/div[@class='item']")
         if books:
             for book in books:
-                book_num = book.xpath("div[@class='title']/h3/a/@href")
-                bookurl = "https://www.xiashuyun.com" + book_num
-                yield scrapy.Request(bookurl, callback=self.getBooks, cb_kwargs={'bnum': book_num}, headers=self.headers)
+                book_num = book.xpath("div[@class='title']/h3/a/@href")[0]
+                bookurl = "https://www.xiashuyun.com" + str(book_num)
+                yield scrapy.Request(bookurl, callback=self.getBook, cb_kwargs={'bnum': book_num}, headers=self.headers)
                 pass
             # 下一页
             # 如果books存在数据则对下一页进行采集
@@ -45,6 +46,7 @@ class DownnovelSpider(scrapy.Spider):
             yield scrapy.Request(next_url, headers=self.headers)
 
     def getBook(self, response, bnum):
+        # print("开始爬取第"+ bnum+"号书籍")
         book = response
         item = NovelItem()
         item['name'] = book.xpath("//div[@id='info']/div[@class='infotitle']/h1/text()")[0]
@@ -57,69 +59,66 @@ class DownnovelSpider(scrapy.Spider):
         intor = '\n'.join(book.xpath("//div[@id='info']/div[@id='aboutbook']/text()"))
         intor = re.sub(r'\u3000\u3000', '', intor)
         item['intro'] = intor
+        yield item
         cnum = book.xpath("//*[@id='mainright']/div[1]/ul/li[2]/text()")[0]
         cnum = int(re.search(r'\d+', cnum).group(0))
         chapters_url = 'https://www.xiashuyun.com/api/ajax/zj?id=' + bnum + '&num=' + cnum + '&order=asc'
-        yield scrapy.Request(chapters_url, callback=self.get_chapter_list, headers=self.headers)
+        yield scrapy.Request(chapters_url, meta={'cnum': cnum, 'bnum': bunm}, callback=self.get_chapter, headers=self.headers)
 
-    def get_chapter_list(self, response):
+    def get_chapter(self, response):
         response.body.decode('utf-8')
         clist = response
-        chapters = clist.xpath("//li/a/@href")
-        for chapter in chapters:
+        cnum = clist.meta['cnum']
+        bnum = clist.meta['bnum']
+        chapters['url'] = clist.xpath("//li/a/@href")
+        chapters['title'] = clist.xpath("//li/a/text()")
+        for i in range(cnum):
             """
             构成
             read_1577.html
             read_1577_3.html
             请求，如果为空，返回本章已爬取完毕，如果book_id相同，就合并章节。
             """
-            url = 'https://www.xiashuyun.com' + chapter
-            yield scrapy.Request(url, callback=self.get_chapter, headers=self.headers, cb_kwargs={'bnum': book_num})
+            url = 'https://www.xiashuyun.com' + chapters['url'][i]
+            c_name = chapters['title'][i]
 
-    def get_chapter(self, response):
-        chapter = response
-        item = ChapterItem()
-        item['c_title'] = chapter.xpath("/html/body/section/div/article/div[1]/h1/a/text()")
-        content = chapter.xpath("//*[@id='chaptercontent']")
+            yield scrapy.Request(url, callback=self.get_chapter, headers=self.headers)
 
-
-
-
-
-
-
-
-
-        #现获取当前页的所有章节
-       
-        chapters = chapter_list.xpath('./li')
-        item['current_page'] = self.current_page
-        #遍历当前所有章节
-        for chapter_id,chapter in enumerate(chapters):
-            # chapter 是用来后面进行排序的
-            item['chapter_url']=chapter.xpath("./a/@href").extract_first()
-            item['chapter_name'] = chapter.xpath("./a/text()").extract_first()
-            item['chapter_url'] ='http://www.qu.la'+ item['chapter_url']
-            yield scrapy.Request(
-                url=item['chapter_url'],
-                callback=self.parse_chapter,
-                meta={'item':deepcopy(item)},
-                cb_kwargs={'num': chapter_id + 1}
-            )
-
-
-        item = response.meta['item']
-        # item['num'] = str(chapter_id) + ':'
-        item['num']=num
-        print(item['num'])
-        item['chapter_title'] = response.xpath("//div[@class='reader-main']/h1/text()").extract_first()
-        item['chapter_content'] = response.xpath("//div[@class='content']/text()").extract()
-        item['chapter_content'] = [i.strip() for i in item['chapter_content'] if item['chapter_content']!='' ]
-        chapter_content = ''.join(item['chapter_content'])
-        item['chapter_content'] = re.sub("'',", '', chapter_content)
-        yield item
-
-
-
-
-            
+            #//*[@id="chaptercontent"]
+            # 获取章节具体内容
+            chapter = response
+            item = ChapterItem()
+            item['title'] = c_name
+            item['b_id'] = bnum
+            item['url'] = url
+            content = chapter.xpath("//*[@id='chaptercontent']/text()")
+            del content[0]
+            if content[-2] == '\u3000\u3000':
+                del content[-2]
+            if content[-1] == '本章未完，请点击下一页继续阅读！            ':
+                del content[-1]
+            for i in range(len(content)):
+                content[i] = str.strip(content[i])
+            content = '\n'.join(content)
+            text = content
+            for i in range(1, 11):
+                page_num = re.search(r'read_(\d+)', url).group(1)
+                page_num = 'read_' + str(int(page_num)) + '_' + i
+                next_url = re.sub(r'read_\d+', page_num, url)
+                yield scrapy.Request(url, callback=self.get_chapter, headers=self.headers)
+                chapter = response
+                content = chapter.xpath("//*[@id='chaptercontent']/text()")
+                if len(content) == 0 :
+                    break
+                else:
+                    del content[0]
+                    if content[-2] == '\u3000\u3000':
+                        del content[-2]
+                    if content[-1] == '本章未完，请点击下一页继续阅读！            ':
+                        del content[-1]
+                    for i in range(len(content)):
+                        content[i] = str.strip(content[i])
+                    content = '\n'.join(content)
+                    text = text + '\n' + content
+            item['content'] = text
+            yield item

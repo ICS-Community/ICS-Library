@@ -19,7 +19,8 @@ class NovelItem(scrapy.Item):
     pass
 
 class ChapterItem(scrapy.Item):
-    c_title = scrapy.Field()
-    c_content =scrapy.Field()
-    c_url = scrapy.Field()
+    b_id = scrapy.Field()
+    title = scrapy.Field()
+    content =scrapy.Field()
+    url = scrapy.Field()
     pass
