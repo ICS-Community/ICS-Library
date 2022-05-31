@@ -31,10 +31,10 @@ class DownnovelSpider(scrapy.Spider):
     def parse(self, response):
         # 获取当前页面的所有书籍
         # Print("开始新的一页")
-        books = response.xpath("//div[@id='waterfall']/div[@class='item']")
+        books = response.xpath("//div[@id='waterfall']/div[@class='item']").getall()
         if books:
             for book in books:
-                book_num = book.xpath("div[@class='title']/h3/a/@href")[0]
+                book_num = book.xpath("div[@class='title']/h3/a/@href").get()
                 bookurl = "https://www.xiashuyun.com" + str(book_num)
                 yield scrapy.Request(bookurl, callback=self.getBook, cb_kwargs={'bnum': book_num}, headers=self.headers)
                 pass
