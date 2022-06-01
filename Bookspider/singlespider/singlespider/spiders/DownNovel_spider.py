@@ -70,6 +70,7 @@ class DownnovelSpider(scrapy.Spider):
         clist = response
         cnum = clist.meta['cnum']
         bnum = clist.meta['bnum']
+        chapters = {}
         chapters['url'] = clist.xpath("//li/a/@href")
         chapters['title'] = clist.xpath("//li/a/text()")
         for i in range(cnum):
