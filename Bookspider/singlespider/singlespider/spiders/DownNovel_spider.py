@@ -31,7 +31,7 @@ class DownnovelSpider(scrapy.Spider):
     def parse(self, response):
         # 获取当前页面的所有书籍
         # Print("开始新的一页")
-        books = response.xpath("//div[@id='waterfall']/div[@class='item']").getall()
+        books = response.xpath("//div[@id='waterfall']/div[@class='item']")
         if books:
             for book in books:
                 book_num = book.xpath("div[@class='title']/h3/a/@href").get()
@@ -49,21 +49,21 @@ class DownnovelSpider(scrapy.Spider):
         # print("开始爬取第"+ bnum+"号书籍")
         book = response
         item = NovelItem()
-        item['name'] = book.xpath("//div[@id='info']/div[@class='infotitle']/h1/text()")[0]
-        author = book.xpath("div[@class='pic']/div/text()")[0]
+        item['name'] = book.xpath("//div[@id='info']/div[@class='infotitle']/h1/text()").get()
+        author = book.xpath("div[@class='pic']/div/text()").get()
         author = re.sub(r' /.*', '', author)
         item['author'] = author
         item['novelurl'] = response.url
-        item['serialstatus'] = book.xpath("//div[@id='info']/div[@class='infotitle']/span/text()")[0]
+        item['serialstatus'] = book.xpath("//div[@id='info']/div[@class='infotitle']/span/text()").get()
         # item['serialnumber'] =  # 没有字数统计
         intor = '\n'.join(book.xpath("//div[@id='info']/div[@id='aboutbook']/text()"))
         intor = re.sub(r'\u3000\u3000', '', intor)
         item['intro'] = intor
         yield item
-        cnum = book.xpath("//*[@id='mainright']/div[1]/ul/li[2]/text()")[0]
+        cnum = book.xpath("//*[@id='mainright']/div[1]/ul/li[2]/text()").get()
         cnum = int(re.search(r'\d+', cnum).group(0))
         chapters_url = 'https://www.xiashuyun.com/api/ajax/zj?id=' + bnum + '&num=' + cnum + '&order=asc'
-        yield scrapy.Request(chapters_url, meta={'cnum': cnum, 'bnum': bunm}, callback=self.get_chapter, headers=self.headers)
+        yield scrapy.Request(chapters_url, meta={'cnum': cnum, 'bnum': bnum}, callback=self.get_chapter, headers=self.headers)
 
     def get_chapter(self, response):
         response.body.decode('utf-8')
