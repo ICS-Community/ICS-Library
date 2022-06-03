@@ -9,6 +9,7 @@ import scrapy
 class NovelItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    id = scrapy.Field()
     name = scrapy.Field() # 小说名
     author = scrapy.Field() # 作者
     novelurl = scrapy.Field() # 小说地址

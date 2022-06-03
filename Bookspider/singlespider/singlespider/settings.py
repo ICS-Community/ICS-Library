@@ -89,3 +89,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+SQLITE_FILE = 'example.db'
+SQLITE_TABLE = 'dmoz'
+
+ITEM_PIPELINES = {
+    'singlespider.pipelines.Sqlite3Pipeline': 300,
+}

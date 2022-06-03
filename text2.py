@@ -1,12 +1,8 @@
-def foo():
-    print("starting...")
-    while True:
-        res = yield 4
-        print("res:",res)
-g = foo()
-# for i in range(5):
-#     print(next(g))  
-#     print("*"*20)
+import requests
+import re
+import sys
+from lxml import etree
 
-print(next(g))
-print(g.send(7))
+url = 'https://www.xiashuyun.com/227203/read_2181_3.html'
+chapter = etree.HTML(requests.get(url).text)
+content = chapter.xpath("//*[@id='chaptercontent']/text()")

@@ -8,7 +8,7 @@ from lxml import etree
 # import copy
 
 class DownnovelSpider(scrapy.Spider):
-    name = 'DownNovel'
+    # name = 'DownNovel'
     # allowed_domains = ['www.qu.la']
     '''
     下书网的构造方法
@@ -95,41 +95,44 @@ class DownnovelSpider(scrapy.Spider):
             item['b_id'] = bnum
             item['url'] = url
 
-            # yield scrapy.Request(url, callback=self.get_chapter, headers=self.headers)
-            # chapter = response
-            chapter = etree.HTML(requests.get(url, headers=self.headers).text)
-            #//*[@id="chaptercontent"]
-            # 获取章节具体内容
-            content = chapter.xpath("//*[@id='chaptercontent']/text()")
-            del content[0]
-            if content[-2] == '\u3000\u3000':
-                del content[-2]
-            if content[-1] == '本章未完，请点击下一页继续阅读！            ':
-                del content[-1]
-            for i in range(len(content)):
-                content[i] = str.strip(content[i])
-            content = '\n'.join(content)
-            text = content
-            for i in range(1, 11):
-                page_num = re.search(r'read_(\d+)', url).group(1)
-                page_num = 'read_' + str(page_num) + '_' + str(i)
-                next_url = re.sub(r'read_(\d+)', page_num, url)
-                # yield scrapy.Request(next_url, callback=self.get_chapter, headers=self.headers)
-                # chapter = response
-                chapter = etree.HTML(requests.get(next_url, headers=self.headers).text)
-                content = chapter.xpath("//*[@id='chaptercontent']/text()")
-                # if not content: break
-                if len(content) < 3 :
-                    break
-                else:
-                    del content[0]
-                    if content[-2] == '\u3000\u3000':
-                        del content[-2]
-                    if content[-1] == '本章未完，请点击下一页继续阅读！            ':
-                        del content[-1]
-                    for i in range(len(content)):
-                        content[i] = str.strip(content[i])
-                    content = '\n'.join(content)
-                    text = text + '\n' + content
+            yield scrapy.Request(url, callback=self.get_ccontent, headers=self.headers) # 获取章节内容
+            # 通过 get_ccontent函数获取具体内容，期望get_ccontent函数可以有返回值以供判断。
+            # chapter = etree.HTML(requests.get(url, headers=self.headers).text)
             item['content'] = text
             yield item
+
+    def get_ccontent(self, response):
+        chapter = response
+        content = chapter.xpath("//*[@id='chaptercontent']/text()")
+        if len(content) < 3 : yield 
+        del content[0]
+        if content[-2] == '\u3000\u3000':
+            del content[-2]
+        if content[-1] == '本章未完，请点击下一页继续阅读！            ':
+            del content[-1]
+        for i in range(len(content)):
+            content[i] = str.strip(content[i])
+        content = '\n'.join(content)
+        text = content
+        
+        page_num = re.search(r'read_(\d+)', url).group(1)
+        page_num = 'read_' + str(page_num) + '_' + str(i)
+        next_url = re.sub(r'read_(\d+)', page_num, url)
+            # yield scrapy.Request(next_url, callback=self.get_chapter, headers=self.headers)
+            # chapter = response
+            chapter = etree.HTML(requests.get(next_url, headers=self.headers).text)
+            content = chapter.xpath("//*[@id='chaptercontent']/text()")
+            # if not content: break
+            if len(content) < 3 :
+                break
+            else:
+                del content[0]
+                if content[-2] == '\u3000\u3000':
+                    del content[-2]
+                if content[-1] == '本章未完，请点击下一页继续阅读！            ':
+                    del content[-1]
+                for i in range(len(content)):
+                    content[i] = str.strip(content[i])
+                content = '\n'.join(content)
+                text = text + '\n' + content
+        
