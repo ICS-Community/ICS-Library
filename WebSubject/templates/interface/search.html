@@ -1,0 +1,15 @@
+{#
+    构造表单
+    搜索内容：
+    标签：
+#}
+<div class="serach-form">
+    <label class="col-sm-2 control-label">标签</label>
+    <div class="col-sm-9">
+        {% for tag in tags %}
+            <label class="checkbox-inline">
+                <input value="{{ tag.id }}" type="checkbox" />{{ tag.name }}
+            </label>
+        {% endfor %}
+    </div>
+</div>

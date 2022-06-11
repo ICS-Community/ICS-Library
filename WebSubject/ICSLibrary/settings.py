@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'tags',
     'forum',
     'users',
+    'interface',
 ]
 
 MIDDLEWARE = [
