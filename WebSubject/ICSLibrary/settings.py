@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 
     # 我的应用程序
     'books',
-    'tags',
+    # 'tags',
     'forum',
     'users',
     'interface',

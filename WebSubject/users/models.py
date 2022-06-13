@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from books.models import Book
 from django.contrib.auth.models import User
-from tags.models import Tag
+from interface.models import Tag
 
 class Profile(models.Model):
     # 个人信息相关，头像之类的。

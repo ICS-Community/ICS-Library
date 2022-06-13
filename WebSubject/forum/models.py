@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from books.models import Book
 from django.contrib.auth.models import User
-from tags.models import Tag
+from interface.models import Tag
 
 class Index(models.Model):
     """首页书籍展示表"""

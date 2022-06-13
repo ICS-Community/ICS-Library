@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from tags.models import Tag
+from interface.models import Tag
 
 def search(request):
     if request.method == 'GET':
