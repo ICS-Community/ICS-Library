@@ -68,9 +68,16 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'singlespider.pipelines.SQLitePipeline': 300,
+    'singlespider.pipelines.MySQLPipeline': 300,
+    # 'singlespider.pipelines.SQLitePipeline': 300,
     # 'singlespider.pipelines.SinglespiderPipeline':200
 }
+
+mysql_host = '127.0.0.1'
+mysql_user = 'root'
+mysql_db = 'forscrapy'
+mysql_db_charset ='utf8'
+mysql_password = ''
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
