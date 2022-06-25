@@ -4,8 +4,10 @@ from sqlalchemy import create_engine, Column, Integer, String, Table, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+Base = declarative_base()
 
-class BookTemplate():
+class Books(Base):
+    __tablename__= 'books'
     id = Column(Integer, primary_key=True)  # 主键自增
     name = Column(String(100))
     author = Column(String(100))
@@ -19,7 +21,8 @@ class BookTemplate():
                 setattr(self, key, items[key])
 
 
-class ChapterTemplate():
+class Chapters(Base):
+    __tablename__= 'chapters'
     b_id = Column(Integer, primary_key=True)  # 主键自增
     num = Column(String(100))
     title = Column(String(100))
@@ -34,16 +37,13 @@ class ChapterTemplate():
 
 class DownNovelSpidersPipeline(object):
 
+    Base = declarative_base()
+
     def __init__(self):  # 执行爬虫时
         self.engine = create_engine('mysql://root:@localhost:3306/novels?charset=utf8', echo=True)  # 连接数据库
         self.session = sessionmaker(bind=self.engine)
         self.sess = self.session()
-        Base = declarative_base()
         # 动态创建orm类,必须继承Base, 这个表名是固定的,如果需要为每个爬虫创建一个表,请使用process_item中的
-        self.Book = type('Books', (Base, BookTemplate),
-                         {'__tablename__': 'books'})
-        self.Chapter = type('Chapters', (Base, ChapterTemplate), {
-                            '__tablename__': 'chapters'})
 
     def process_item(self):  # 爬取过程中执行的函数
         # 按照爬虫名动态创建一个类
@@ -51,8 +51,8 @@ class DownNovelSpidersPipeline(object):
         #     self.Article = type(spider.name, (Base, ArticleTemplate), {'__tablename__': spider.name, })
         # 在数据库中创建这个表
         # if spider.name not in self.engine.table_names(): #create table for this spider
-        self.Book.metadata.create_all(self.engine)
-        self.Chapter.metadata.create_all(self.engine)
+        Books.metadata.create_all(self.engine)
+        Chapters.metadata.create_all(self.engine)
         # if isinstance(item, NovelItem):
         #     self.sess.add(self.Book(**item))
         #     self.sess.commit()

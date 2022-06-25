@@ -2,7 +2,7 @@ from singlespider.items import NovelItem, ChapterItem
 from . import settings
 
 
-from sqlalchemy import create_engine, Column, Integer, String, Table, MetaData
+from sqlalchemy import create_engine, Column, Integer, String, Text, Table, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -12,8 +12,8 @@ class BookTemplate():
     name = Column(String(100))
     author = Column(String(100))
     serialstatus = Column(String(100))
-    intro = Column(String(100))
-    novelurl = Column(String(100))
+    intro = Column(Text)
+    novelurl = Column(String(200))
 
     def __init__(self, **items):
         for key in items:
@@ -22,11 +22,12 @@ class BookTemplate():
 
 
 class ChapterTemplate():
-    b_id = Column(Integer, primary_key=True)  # 主键自增
+    id = Column(Integer, primary_key=True)
+    b_id = Column(Integer)  # 主键自增
     num = Column(String(100))
     title = Column(String(100))
-    content = Column(String(100))
-    url = Column(String(100))
+    # content = Column(Text)
+    url = Column(String(200))
 
     def __init__(self, **items):
         for key in items:
