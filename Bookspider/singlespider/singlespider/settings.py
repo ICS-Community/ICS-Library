@@ -68,7 +68,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'singlespider.pipelines.MySQLPipeline': 300,
+    'singlespider.pipelines.DownNovelSpidersPipeline': 300,
     # 'singlespider.pipelines.SQLitePipeline': 300,
     # 'singlespider.pipelines.SinglespiderPipeline':200
 }
