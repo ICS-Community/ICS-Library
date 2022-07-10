@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'ics-library',
         'USER': 'Admin',
         'PASSWORD': '2006',
-        'HOST': 'localhost',
+        'HOST': '%',
         'PORT': '3306',
     }
 }
