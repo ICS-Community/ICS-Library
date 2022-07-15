@@ -64,7 +64,7 @@ def add_book(request):
             new_book.save()
             return HttpResponseRedirect(reverse('books:book_detail',args=[new_book.id]))
     
-    context = {'book':new_book, 'form':form}
+    context = {'form':form}
     return render(request, 'books/add_book.html', context)
 
 @login_required

@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'singlespider.spiders'
 #USER_AGENT = 'singlespider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -102,6 +102,7 @@ mysql_password = ''
 
 SCHEDULER_PRIORITY_QUEUE = 'scrapy.pqueues.DownloaderAwarePriorityQueue'
 CONCURRENT_REQUESTS = 100
+CONCURRENT_REQUESTS_PER_DOMAIN = 8
 REACTOR_THREADPOOL_MAXSIZE = 20
 LOG_LEVEL = 'INFO'
 COOKIES_ENABLED = False
@@ -110,3 +111,6 @@ REDIRECT_ENABLED = False
 # DEPTH_PRIORITY = 1
 # SCHEDULER_DISK_QUEUE = 'scrapy.squeues.PickleFifoDiskQueue'
 # SCHEDULER_MEMORY_QUEUE = 'scrapy.squeues.FifoMemoryQueue'
+# 随机下载延迟 0.35 ~ 1.05
+DOWNLOAD_DELAY = 0.7
+RANDOMIZE_DOWNLOAD_DELAY = True

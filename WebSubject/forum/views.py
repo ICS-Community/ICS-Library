@@ -13,7 +13,7 @@ def index(request):
 
 def forum(request):
     # 社区首页
-    contents = Content.objects.filter(t_id=None)
+    contents = Content.objects.filter(p_id=None)
     context = {'contents':contents}
     return render(request, 'forum/forum.html', context)
 
@@ -45,7 +45,7 @@ def add_topic(request, topic_id=-1):
                 new_topic.save()
                 return HttpResponseRedirect(reverse('forum:topic_detail',args=[new_topic.id]))
             else:
-                new_topic.t_id = get_object_or_404(Content, id=topic_id)
+                new_topic.p_id = get_object_or_404(Content, id=topic_id)
                 new_topic.save()
                 return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic_id]))
     
@@ -66,10 +66,10 @@ def edit_topic(request, topic_id):
         form = TopicForm(instance=topic, data=request.POST)
         if form.is_valid():
             form.save()
-            if topic.t_id == None:
+            if topic.p_id == None:
                 return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic_id]))
             else:
-                return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.t_id.id]))
+                return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.p_id.id]))
 
     context = {'topic': topic, 'form': form}
     return render(request, 'forum/edit_topic.html', context)

@@ -1,15 +1,20 @@
-{#
-    构造表单
-    搜索内容：
-    标签：
-#}
-<div class="serach-form">
-    <label class="col-sm-2 control-label">标签</label>
-    <div class="col-sm-9">
+{% comment %} 构造表单 搜索内容： 标签： {% endcomment %}
+
+<form action="{% url 'interface:search' %}" method="POST">
+    {% csrf_token %}
+    <label class="visuallyhidden" for="id_q">Search:</label>
+    <input type="search" name="content" placeholder="搜索 书库" id="id_q" />
+    <fieldset>
+        <legend>标签列表:</legend>
         {% for tag in tags %}
-            <label class="checkbox-inline">
-                <input value="{{ tag.id }}" type="checkbox" />{{ tag.name }}
-            </label>
+        <label>{{ tag.title }}</label>
+        <input type="checkbox"  name="tag_list"  value="{{ tag.id }}" />
         {% endfor %}
-    </div>
-</div>
+    </fieldset>
+    <button type="submit">
+        <i class="icon icon-search"></i>
+        <span class="visuallyhidden">搜索</span>
+    </button>
+</form>
+
+

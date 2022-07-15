@@ -18,7 +18,7 @@ class Organize(models.Model):
 
 # 帖子表 用于社区的书单，帖子，书籍的长回复
 class Content(models.Model):
-    t_id = models.ForeignKey('Content', verbose_name='指向内容的id', null=True, blank = True, on_delete=models.SET_NULL) # 如果不为空的话就是帖子，如果为空的话就是专栏或书单
+    p_id = models.ForeignKey('Content', verbose_name='指向内容的id', null=True, blank = True, on_delete=models.SET_NULL) # 如果不为空的话就是帖子，如果为空的话就是专栏或书单
     author =  models.ForeignKey(User, verbose_name='作者', null=True, blank = True, on_delete=models.SET_NULL)
     tags = models.ManyToManyField(Tag, verbose_name='标签') # 注意,帖子，专栏，书单就是用这个来分类的哒。
     create_time = models.DateField(verbose_name='创建时间', auto_now_add=True)

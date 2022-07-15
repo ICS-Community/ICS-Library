@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     # 我的应用程序
     'books',
-    # 'tags',
     'forum',
     'users',
     'interface',
@@ -83,15 +82,14 @@ WSGI_APPLICATION = 'ICSLibrary.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ics-library',
-        'USER': 'Admin',
-        'PASSWORD': '2006',
-        'HOST': '%',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ICS-Library',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('library/', include('books.urls')),
+    path('api/', include('interface.urls')), # 测试用，发布关闭
     path('', include('forum.urls')),
 ]

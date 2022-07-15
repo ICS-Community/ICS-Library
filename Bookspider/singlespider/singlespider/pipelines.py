@@ -26,7 +26,7 @@ class ChapterTemplate():
     b_id = Column(Integer)  # 主键自增
     num = Column(String(100))
     title = Column(String(100))
-    # content = Column(Text)
+    content = Column(Text)
     url = Column(String(200))
 
     def __init__(self, **items):
