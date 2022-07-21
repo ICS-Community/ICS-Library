@@ -35,7 +35,7 @@ urlpatterns = [
     # 用于编辑章节的页面
     path('edit_chapter/<int:book_id>/<int:chapter_id>/', views.edit_chapter, name='edit_chapter'),
 
-    path('add_gsent/<int:book_id>/', views.add_gsentence, name='add_gsentence')
+    path('add_gsent/<int:book_id>/', views.add_comment, name='add_comment')
     # # 用于编辑好句的页面
     # path('edit_gsent/<int:book_id>/', views.edit_g_sentence, name='edit_gsent'),
 

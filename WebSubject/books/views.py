@@ -168,7 +168,8 @@ def edit_chapter(request, book_id, chapter_id):
     context = {'chapter': chapter, 'book': book, 'form': form}
     return render(request, 'books/edit_chapter.html', context)
 
-def add_gsentence(request, book_id):
+"""Comment和Gsentents相似"""
+def add_comment(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method != 'POST':
         # 未提交数据，创建一个新表单
