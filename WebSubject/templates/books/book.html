@@ -22,7 +22,7 @@
         <li>标签：
             <ul>
                 {% for tag in tags %}
-                <li>{{tag.title}}</li>
+                <li><a href = "{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a></li>
                 {% endfor %}
             </ul>
         </li>
@@ -36,6 +36,20 @@
     <h3>简介</h3>
     <P>{{book.intro}}</P>
 </div>
+{% include 'books/score.html' with book_id=book.id %}
+<ul>
+    <li>{{book_start.stars0}}</li>
+    <li>{{book_start.stars1}}</li>
+    <li>{{book_start.stars2}}</li>
+    <li>{{book_start.stars3}}</li>
+    <li>{{book_start.stars4}}</li>
+    <li>{{book_start.stars5}}</li>
+    <li>{{book_start.stars6}}</li>
+    <li>{{book_start.stars7}}</li>
+    <li>{{book_start.stars8}}</li>
+    <li>{{book_start.stars9}}</li>
+    <li>{{book_start.stars10}}</li>
+</ul>
 <hr />
 <h3>章节目录</h3>
 <hr />

@@ -11,6 +11,10 @@ def index(request):
     return render(request, 'forum/index.html')
 
 def search(request):
+    """搜索功能
+    动态的搜索框，根据已经选择的标签，更改搜索框，比如，选择贴子之后，显示是否为仅搜索第一层。
+    选择小说之后，显示字数等标签。
+    """
     if request.method == 'GET':
         tags = Tag.objects.all() # 获取tags列表
         return render(request, 'interface/search.html', {'tags': tags})
@@ -19,7 +23,7 @@ def search(request):
         # 获取复选框的值,是一个选中的数组
         tags = request.POST.getlist('tag_list')
         print(tags)
-        content = Content.objects.filter(p_id=None)
+        content = Content.objects.filter(p_id=None) # 注意，显示所有和显示无父亲选项的作为搜索条件，可以选择。
         for tag in tags:
             content = content.filter(tags=tag)
         context = {'contents':content}

@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+import imp
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .tools import *
+from interface.models import Tag
+from books.models import Book
 
 
 def index(request):
@@ -38,7 +41,8 @@ def add_topic(request, topic_id=-1):
         # POST提交的数据，对数据进行处理
         form = TopicForm(data=request.POST)
         if form.is_valid():
-            new_topic = form.save(commit=False)
+            new_topic = form.save()
+            new_topic = get_object_or_404(Content, id=new_topic.id)
             new_topic.author = request.user
             # 在前端强制选中帖子标签Javascript实现
             if topic_id == -1:
@@ -73,3 +77,13 @@ def edit_topic(request, topic_id):
 
     context = {'topic': topic, 'form': form}
     return render(request, 'forum/edit_topic.html', context)
+
+def tag_detail(request, tid):
+    """标签详情页面, 注意参考Pixiv"""
+    tag = get_object_or_404(Tag, tid=tid)
+    # 特判，几个重定向
+    if tid == 'book': return redirect(reverse('books:index'))
+    # 获取几个不同内容
+    books = Book.objects.filter(tags=tag)
+    context = {'tag':tag, 'books':books}
+    return render(request, 'forum/tag_detail.html', context)

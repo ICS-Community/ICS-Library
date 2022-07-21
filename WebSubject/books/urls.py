@@ -15,6 +15,9 @@ urlpatterns = [
     # 系列的详细页面
     path('series/<int:series_id>/', views.series_detail, name='series_detail'),
 
+    # 评分表单回调页
+    path('book/<int:book_id>/score', views.book_score, name='book_score'),
+    
     # 章节内容页面
     path('book/<int:book_id>/<int:chapter_id>/', views.chapter, name='chapter'),
 
@@ -32,6 +35,7 @@ urlpatterns = [
     # 用于编辑章节的页面
     path('edit_chapter/<int:book_id>/<int:chapter_id>/', views.edit_chapter, name='edit_chapter'),
 
+    path('add_gsent/<int:book_id>/', views.add_gsentence, name='add_gsentence')
     # # 用于编辑好句的页面
     # path('edit_gsent/<int:book_id>/', views.edit_g_sentence, name='edit_gsent'),
 

@@ -1,31 +1,30 @@
-{% extends "books/base.html" %}
-
-{% block main %}
+{% extends "books/base.html" %} {% block main %}
 <div>
-    <h2>昵称：{{ profile.nickname }}</h2>
-    <p>{{ user.username }}</p>
-    {# 用户头像 #}
-    <ul>
-        <li>标签：
-            <ul>
-                {% for tag in tags %}
-                <li>{{tag.title}}</li>
-                {% endfor %}
-            </ul>
-        </li>
-    </ul>
-    <h3>书架</h3>
-    <div>
-        {% for u_bf in u_bfs %}
-        <div>
-            <h3>{{ u_bf.title }}</h3>
-            <P>{{ u_bf.intro }}</P>
-        
-            {#<!-- 用Javascript获取列表 -->#}
-            <a href="{% url 'users:ubook_list' user.id u_bf.id %}">查看详情</a>
-        </div>
+  <h2>昵称：{{ profile.nickname }}</h2>
+  <p>{{ user.username }}</p>
+  {# 用户头像 #}
+  <p><a href="{% url 'users:user_manage' user.id %}">后台管理</a></p>
+  <ul>
+    <li>
+      标签：
+      <ul>
+        {% for tag in tags %}
+        <li><a href = "{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a></li>
         {% endfor %}
+      </ul>
+    </li>
+  </ul>
+  <h3>书架</h3>
+  <div>
+    {% for u_bf in u_bfs %}
+    <div>
+      <h3>{{ u_bf.title }}</h3>
+      <p>{{ u_bf.intro }}</p>
+
+      {#<!-- 用Javascript获取列表 -->#}
+      <a href="{% url 'users:ubook_list' user.id u_bf.id %}">查看详情</a>
     </div>
-   
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}
