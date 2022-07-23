@@ -21,7 +21,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView, RedirectView
 
-from djangoblog.utils import send_email, get_sha256, get_current_site, generate_code, delete_sidebar_cache
+# from djangoblog.utils import send_email, get_sha256, get_current_site, generate_code, delete_sidebar_cache
 from . import utils
 from .forms import RegisterForm, LoginForm, ForgetPasswordForm, ForgetPasswordCodeForm
 from .models import BlogUser

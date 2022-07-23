@@ -1,3 +1,4 @@
+from tkinter import Widget
 from django import forms
 from .models import *
 
@@ -16,10 +17,14 @@ class ChapterForm(forms.ModelForm):
 
 class GsentenceForm(forms.ModelForm):
     class Meta:
-        model = Comment
+        model = Gsentence
         fields = ['content']
         labels = {'content':'好句'}
         widgets = {'content':forms.Textarea(attrs={'cols':80})}
 
-# class ShortcommentForm(froms.ModelForm):
-#     class Meta:
+class ShortcommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        labels = {'content':'好句'}
+        widgets = {'content':forms.Textarea(attrs={'cols':80})}

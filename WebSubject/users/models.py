@@ -8,6 +8,7 @@ class Profile(models.Model):
     # 个人信息相关，头像之类的。
     u_id = models.OneToOneField(to = User, on_delete=models.CASCADE, verbose_name="用户ID")
     nickname = models.CharField(max_length=90, verbose_name="昵称")
+    integral = models.BigIntegerField(verbose_name="积分")
     
     def __str__(self):
         return self.u_id.username
@@ -27,3 +28,19 @@ class Bookforbs(models.Model):
     
     def __str__(self):
         return (self.book.title + ' - ' + self.f_id.__str__())
+    
+class Status(models.Model):
+    """用于记录一些日常状态"""
+    u_id = models.OneToOneField(to = User, on_delete=models.CASCADE, verbose_name="用户ID")
+    check_in_time = models.DateField(auto_now = True, verbose_name="最后签到日期")
+    Continuous_check_in_time = models.IntegerField(defult = 0, verbose_name="连续签到时间") #D#################
+
+    def __str__(self):
+        return self.u_id.username
+
+class TEST(models.Model):
+    u_id = models.OneToOneField(to = User, on_delete=models.CASCADE, verbose_name="用户ID")
+    dddd = models.DateField(auto_now = True, verbose_name="最后签到日期")   
+
+    def __str__(self):
+        return self.u_id.username

@@ -6,3 +6,5 @@ from users.models import *
 admin.site.register(Profile)
 admin.site.register(Bookshelf)
 admin.site.register(Bookforbs)
+admin.site.register(Status)
+admin.site.register(TEST)

@@ -66,18 +66,19 @@ class Chapter(models.Model):
         return self.title
 
 class Gsentence(models.Model):
+    p_id = models.ForeignKey('Gsentence', verbose_name='指向内容的id', null=True, blank = True, on_delete=models.SET_NULL)
     b_id = models.ForeignKey('Book', verbose_name='书籍ID', on_delete=models.CASCADE)
-    u_id = models.ForeignKey(User, verbose_name="发布者", null=True, blank=True, on_delete=models.SET_NULL)
+    u_id = models.ForeignKey(User, verbose_name="用户ID", null=True, blank=True, on_delete=models.SET_NULL)
     content = models.TextField(verbose_name='内容')
 
     def __str__(self):
         return self.b_id.title
 
 class Comment(models.Model):
-    """和 Gsentence 非常相似，并且二者都支持评论，预计使用Type来区分"""
+    """和 Gsentence 非常相似"""
+    p_id = models.ForeignKey('Comment', verbose_name='指向内容的id', null=True, blank = True, on_delete=models.SET_NULL)
     b_id = models.ForeignKey("Book", verbose_name="书籍ID", on_delete=models.CASCADE)
     u_id = models.ForeignKey(User, verbose_name="用户ID", null=True, blank=True, on_delete=models.SET_NULL)
-    type = models.IntegerField(verbose_name='类型')
     content = models.TextField(verbose_name='内容')
 
     def __str__(self):

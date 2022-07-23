@@ -169,7 +169,7 @@ def edit_chapter(request, book_id, chapter_id):
     return render(request, 'books/edit_chapter.html', context)
 
 """Comment和Gsentents相似"""
-def add_comment(request, book_id):
+def add_gsentents(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method != 'POST':
         # 未提交数据，创建一个新表单
@@ -191,9 +191,21 @@ def add_comment(request, book_id):
 def edit_gsentence(request, book_id, gsentence_id):
     pass
 
-
-# def search(request):
-#     '''搜索页'''
-#     return render(request, 'books/search.html')
-
-
+def add_comment(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method != 'POST':
+        # 未提交数据，创建一个新表单
+        form = ShortcommentForm()
+    else:
+        # POST提交的数据，对数据进行处理
+        form = ShortcommentForm(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.b_id = book
+            new_comment.u_id = request.user
+            new_comment.type = 1
+            new_comment.save()
+            return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
+    
+    context = {'form':form, 'book_id':book_id}
+    return render(request, 'books/new_comment.html', context)
