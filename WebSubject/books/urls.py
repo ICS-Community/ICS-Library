@@ -23,6 +23,7 @@ urlpatterns = [
 
     # 好句，评论相关
     path('add_gsent/<int:book_id>/', views.add_gsentents, name='add_gsentents'),
+    # path('book/<int:book_id>/gsent/<int:gsent_id>', views.) # 好句详细界面
     # path('edit_gsent/<int:book_id>/', views.edit_g_sentence, name='edit_gsent'),
     path('add_comment/<int:book_id>/', views.add_comment, name='add_comment'),
 

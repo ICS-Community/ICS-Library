@@ -181,7 +181,6 @@ def add_gsentents(request, book_id):
             new_gsentence = form.save(commit=False)
             new_gsentence.b_id = book
             new_gsentence.u_id = request.user
-            new_gsentence.type = 1
             new_gsentence.save()
             return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
     
@@ -189,7 +188,24 @@ def add_gsentents(request, book_id):
     return render(request, 'books/add_gsentence.html', context)
 
 def edit_gsentence(request, book_id, gsentence_id):
-    pass
+    gsentence = get_object_or_404(Gsentence, id=gsentence_id)
+    # check_topic_owner(topic, request)
+
+    if request.method != 'POST':
+        # 初次请求，使用当前条目填充表单
+        form = GsentenceForm(instance=gsentence)
+    else:
+        # POST提交的数据，对数据进行处理
+        form = GsentenceForm(instance=gsentence, data=request.POST)
+        if form.is_valid():
+            form.save()
+            if gsentence.p_id == None:
+                return HttpResponseRedirect(reverse('forum:book_detail',args=[topic_id]))
+            else:
+                return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.p_id.id]))
+
+    context = {'topic': topic, 'form': form}
+    return render(request, 'forum/edit_topic.html', context)
 
 def add_comment(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -203,7 +219,6 @@ def add_comment(request, book_id):
             new_comment = form.save(commit=False)
             new_comment.b_id = book
             new_comment.u_id = request.user
-            new_comment.type = 1
             new_comment.save()
             return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
     

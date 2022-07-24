@@ -59,11 +59,11 @@ class Register(View):
         if exists:
             messages.success(request, "该账号已注册!")
             return redirect(reverse('users:register'))
-        new_user = User.objects.create_user(
-            username=username, password=password)
+        new_user = User.objects.create_user(username=username, password=password)
         new_user.save()
-        u_profile = Profile.objects.create(u_id=new_user.id, nickname=username)
+        u_profile = Profile.objects.create(u_id=new_user, nickname=username)
         u_profile.save()
+        u_status = Status.objects.create(u_id=new_user)
         login(request, new_user)
         return redirect(reverse('forum:index'))
 
