@@ -67,6 +67,7 @@ class Chapter(models.Model):
 
 class Gsentence(models.Model):
     p_id = models.ForeignKey('Gsentence', verbose_name='指向内容的id', null=True, blank = True, on_delete=models.SET_NULL)
+    # 没指向内容的是好句，有的是评论
     b_id = models.ForeignKey('Book', verbose_name='书籍ID', on_delete=models.CASCADE)
     u_id = models.ForeignKey(User, verbose_name="用户ID", null=True, blank=True, on_delete=models.SET_NULL)
     content = models.TextField(verbose_name='内容')

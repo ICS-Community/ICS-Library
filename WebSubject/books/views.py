@@ -182,6 +182,7 @@ def add_gsentents(request, book_id):
             new_gsentence.b_id = book
             new_gsentence.u_id = request.user
             new_gsentence.save()
+            # 修改回调到详细界面
             return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
     
     context = {'form':form, 'book_id':book_id}
@@ -200,12 +201,14 @@ def edit_gsentence(request, book_id, gsentence_id):
         if form.is_valid():
             form.save()
             if gsentence.p_id == None:
-                return HttpResponseRedirect(reverse('forum:book_detail',args=[topic_id]))
+                pass
+                # return HttpResponseRedirect(reverse('forum:book_detail',args=[topic_id]))
             else:
-                return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.p_id.id]))
+                pass
+                # return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.p_id.id]))
 
-    context = {'topic': topic, 'form': form}
-    return render(request, 'forum/edit_topic.html', context)
+    context = {'gsent': gsentence, 'form': form}
+    return render(request, 'forum/edit_gsentence.html', context)
 
 def add_comment(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -224,3 +227,32 @@ def add_comment(request, book_id):
     
     context = {'form':form, 'book_id':book_id}
     return render(request, 'books/new_comment.html', context)
+
+def edit_comment(request, book_id, comment_id):
+    comment = get_object_or_404(Gsentence, id=comment)
+    # check_topic_owner(topic, request)
+
+    if request.method != 'POST':
+        # 初次请求，使用当前条目填充表单
+        form = GsentenceForm(instance=comment)
+    else:
+        # POST提交的数据，对数据进行处理
+        form = GsentenceForm(instance=comment, data=request.POST)
+        if form.is_valid():
+            form.save()
+            if comment.p_id == None:
+                pass
+                # return HttpResponseRedirect(reverse('forum:book_detail',args=[topic_id]))
+            else:
+                pass
+                # return HttpResponseRedirect(reverse('forum:topic_detail',args=[topic.p_id.id]))
+
+    context = {'gsent': comment, 'form': form}
+    return render(request, 'forum/edit_gsentence.html', context)   
+
+"""某评论，好句的回调端口"""
+def gsentents_detail(book_id, gsentent_id):
+    '''显示系列的详细信息'''
+    gsent = get_object_or_404(Series, id=gsentent_id)
+    context = {'gsent':gsent, 'book_id':book_id}
+    return render(gsentent_id, 'books/gsentents_detail.html', context)
