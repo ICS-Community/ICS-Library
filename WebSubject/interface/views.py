@@ -1,9 +1,10 @@
 import imp
 from multiprocessing.spawn import import_main_path
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from interface.models import Tag
 from django.http import HttpResponse
 from forum.models import Content
+from books.models import Comment
 from django.db.models import Q
 
 def index(request):
@@ -29,4 +30,9 @@ def search(request):
         context = {'contents':content}
         return render(request, 'forum/forum.html', context)
         # return HttpResponse(content)
-        
+
+def book_comment_api(request):
+    """从URL获取请求的CommentID, 请求个数"""
+    f_comment = get_object_or_404(Comment, id=)
+    # comments = 
+    pass
