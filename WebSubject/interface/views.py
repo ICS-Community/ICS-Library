@@ -1,11 +1,10 @@
-import imp
-from multiprocessing.spawn import import_main_path
+from asyncio.windows_events import NULL # 异步IO
+import json
 from django.shortcuts import render, get_object_or_404
 from interface.models import Tag
 from django.http import HttpResponse
 from forum.models import Content
-from books.models import Comment
-from django.db.models import Q
+import books.models as bm
 
 def index(request):
     # 主页
@@ -31,8 +30,38 @@ def search(request):
         return render(request, 'forum/forum.html', context)
         # return HttpResponse(content)
 
-def book_comment_api(request):
+# 回复相关
+def build_comment_tree(comment_tree, commnet, num):
+    comment_tree.append({})
+    comment_tree[num]['u_id'] = str(commnet.u_id)
+    comment_tree[num]['content'] = commnet.content
+    comment_tree[num]['reply'] = []
+    # print(comment_tree)
+    son_commnets = commnet.comment_set.all()
+    if son_commnets != None:
+        cont = 0
+        for son_commnet in son_commnets:
+            build_comment_tree(comment_tree[num]['reply'], son_commnet, cont)
+            cont += 1
+
+
+def book_comment_api(request, book_id):
     """从URL获取请求的CommentID, 请求个数"""
-    f_comment = get_object_or_404(Comment, id=)
-    # comments = 
-    pass
+    comments = bm.Comment.objects.filter(b_id = book_id, p_id=None)
+    if comments != None:
+        cont = 0
+        comment_tree = []
+        for comment in comments:
+            build_comment_tree(comment_tree, comment, cont)
+            cont+=1
+        return HttpResponse(json.dumps(comment_tree))
+
+def gsent_comment_api(request, gsent_id):
+    comments = bm.Gsentence.objects.filter(p_id=gsent_id)
+    if comments != None:
+        cont = 0
+        comment_tree = []
+        for comment in comments:
+            build_comment_tree(comment_tree, comment, cont)
+            cont+=1
+        return HttpResponse(json.dumps(comment_tree))

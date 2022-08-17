@@ -83,7 +83,7 @@ class Comment(models.Model):
     content = models.TextField(verbose_name='内容')
 
     def __str__(self):
-        return self.b_id.title
+        return self.b_id.title + '-' + str(self.id)
 
 
 

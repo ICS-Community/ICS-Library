@@ -42,7 +42,6 @@ def add_topic(request, topic_id=-1):
         form = TopicForm(data=request.POST)
         if form.is_valid():
             new_topic = form.save()
-            new_topic = get_object_or_404(Content, id=new_topic.id)
             new_topic.author = request.user
             # 在前端强制选中帖子标签Javascript实现
             if topic_id == -1:

@@ -5,8 +5,8 @@ from .models import *
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author','language', 'series', 'intro', 'tags', 'if_pub']
-        labels = {'title':'书名', 'author':'作者','language':'语言', 'series':'系列', 'intro':'简介', 'tags':'标签', 'if_pub':'是否出版'}
+        fields = ['title', 'language', 'series', 'intro', 'tags', 'if_pub']
+        labels = {'title':'书名', 'language':'语言', 'series':'系列', 'intro':'简介', 'tags':'标签', 'if_pub':'是否出版'}
 
 class ChapterForm(forms.ModelForm):
     class Meta:

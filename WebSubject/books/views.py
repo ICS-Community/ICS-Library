@@ -95,6 +95,8 @@ def add_book(request):
         # new_book = Book.objects.create()
         if form.is_valid():
             new_book = form.save()
+            new_book.author.add(request.user)
+            new_book.save()
             Starts(b_id = new_book).save()
             # print(new_book.tags)
             # new_book.save() # 如果处理后再提交的话，因为没有ID，多对多关系无法保存。
@@ -106,16 +108,16 @@ def add_book(request):
 
 @login_required
 def edit_book(request, book_id):
-    '''编辑既有书籍'''
     book = get_object_or_404(Book, id=book_id)
     # check_topic_owner(topic, request)
-
+    if request.GET['author'] == 'multiple':is_multiple = True
     if request.method != 'POST':
         # 初次请求，使用当前条目填充表单
-        form = BookForm(instance=book)
+        if is_multiple:
+            form = BookForm(instance=book)
     else:
         # POST提交的数据，对数据进行处理
-        form = BookForm(instance=book, data=request.POST)
+        if is_multiple:form = BookForm(instance=book, data=request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))
@@ -253,6 +255,6 @@ def edit_comment(request, book_id, comment_id):
 """某评论，好句的回调端口"""
 def gsentents_detail(book_id, gsentent_id):
     '''显示系列的详细信息'''
-    gsent = get_object_or_404(Series, id=gsentent_id)
+    gsent = get_object_or_404(Gsentence, id=gsentent_id)
     context = {'gsent':gsent, 'book_id':book_id}
     return render(gsentent_id, 'books/gsentents_detail.html', context)

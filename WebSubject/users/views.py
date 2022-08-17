@@ -64,6 +64,7 @@ class Register(View):
         u_profile = Profile.objects.create(u_id=new_user, nickname=username)
         u_profile.save()
         u_status = Status.objects.create(u_id=new_user)
+        u_status.save()
         login(request, new_user)
         return redirect(reverse('forum:index'))
 
