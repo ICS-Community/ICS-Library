@@ -22,7 +22,7 @@ def search(request):
         # content = request.POST['content']
         # 获取复选框的值,是一个选中的数组
         tags = request.POST.getlist('tag_list')
-        print(tags)
+        # print("")
         content = Content.objects.filter(p_id=None) # 注意，显示所有和显示无父亲选项的作为搜索条件，可以选择。
         for tag in tags:
             content = content.filter(tags=tag)

@@ -4,8 +4,27 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, reverse, render, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages # 为什么消息提示发送在管理页面？
+from django.utils import timezone
 from .models import *
+from django.http import HttpResponse
 
+class check_in(View):
+    def get(self, request):
+        user = request.user
+        status = user.status
+        d1 = timezone.now().strftime("%Y-%m-%d")
+        if str(status.check_in_time) != d1: # 如果今天还没有签到
+            status.check_in_time = d1
+            status.save()
+            # return HttpResponse(status.check_in_time)
+            context = {'user': user, 'sign_in_status':0}
+            return render(request, 'users/check_in.html', context)
+        else:
+            # return HttpResponse('ok')
+            context = {'user': user, 'sign_in_status':1}
+            return render(request, 'users/check_in.html', context)
+    def post(self, request):
+        pass
 
 def User_detail(request, u_id):
     user = get_object_or_404(User, id=u_id)
@@ -28,8 +47,6 @@ def User_manage(request, u_id):
     return render(request, 'users/user_manage.html', context)
 
 # 注册
-
-
 class Register(View):
 
     def get(self, request):
@@ -69,8 +86,6 @@ class Register(View):
         return redirect(reverse('forum:index'))
 
 # 登录
-
-
 class Login(View):
 
     def get(self, request):
