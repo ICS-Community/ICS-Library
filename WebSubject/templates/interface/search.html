@@ -1,20 +1,18 @@
 {% comment %} 构造表单 搜索内容： 标签： {% endcomment %}
 
 <form action="{% url 'interface:search' %}" method="post">
-    {% csrf_token %}
-    <label class="visuallyhidden" for="id_q">Search:</label>
-    <input type="search" name="content" placeholder="搜索 书库" id="id_q" />
-    <fieldset>
-        <legend>标签列表:</legend>
-        {% for tag in tags %}
-        <label>{{ tag.title }}</label>
-        <input type="checkbox"  name="tag_list"  value="{{ tag.id }}" />
-        {% endfor %}
-    </fieldset>
-    <button type="submit">
-        <i class="icon icon-search"></i>
-        <span class="visuallyhidden">搜索</span>
-    </button>
+  {% csrf_token %}
+  <label class="visuallyhidden" for="id_q">Search:</label>
+  <input type="search" name="content" placeholder="搜索 书库" id="id_q" />
+  <fieldset>
+    <legend>标签列表:</legend>
+    {% for tag in tags %}
+    <label>{{ tag.title }}</label>
+    <input type="checkbox" name="tag_list" value="{{ tag.id }}" />
+    {% endfor %}
+  </fieldset>
+  <button type="submit">
+    <i class="icon icon-search"></i>
+    <span class="visuallyhidden">搜索</span>
+  </button>
 </form>
-
-

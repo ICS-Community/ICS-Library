@@ -1,12 +1,10 @@
-{% extends "books/base.html" %}
-{% block main %}
-    <h3>注册</h3>
-    <form role="form" action="{% url 'users:register' %}" method="POST">
-        {% csrf_token %}
-        用户名: <input type="text" name="username"><br>
-        密码: <input type="text" name="password"><br>
-        确认密码：<input type="text" name="check_password"><br>
-        <button name="submit">注册</button>
-    </form>
-  
+{% extends "books/base.html" %} {% block main %}
+<h3>注册</h3>
+<form role="form" action="{% url 'users:register' %}" method="POST">
+  {% csrf_token %} 用户名: <input type="text" name="username" /><br />
+  密码: <input type="text" name="password" /><br />
+  确认密码：<input type="text" name="check_password" /><br />
+  <button name="submit">注册</button>
+</form>
+
 {% endblock %}

@@ -1,47 +1,52 @@
-{% extends "books/base.html" %}
-
-{% block main %}
+{% extends "books/base.html" %} {% block main %}
 <h3>帖子详情</h3>
 <hr />
 <div>
-    <h2>{{ topic.title }}</h2>
-    {# 图书的图片 #}
-    <ul>
+  <h2>{{ topic.title }}</h2>
+  {# 图书的图片 #}
+  <ul>
+    <li>楼主：{{topic.author}}</li>
+    <li>
+      标签：
+      <ul>
+        {% for tag in tags %}
+        <li>
+          <a href="{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
+    <li><a href="{% url 'forum:edit_topic' topic.id %}">编辑帖子</a></li>
+  </ul>
+  <h3>正文</h3>
+  <p>{{topic.text}}</p>
+  <div><a href="{% url 'forum:add_topic' topic.id %}">跟贴</a></div>
+  <div>
+    {% for topic in Follow_topics %}
+    <div>
+      <h2>
+        <a href="{% url 'forum:topic_detail' topic.id %}">{{ topic.title }}</a>
+      </h2>
+      {# 图书的图片 #}
+      <ul>
         <li>楼主：{{topic.author}}</li>
-        <li>标签：
-            <ul>
-                {% for tag in tags %}
-                <li><a href = "{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a></li>
-                {% endfor %}
-            </ul>
+        <li>
+          标签：
+          <ul>
+            {% for tag in tags %}
+            <li>
+              <a href="{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a>
+            </li>
+            {% endfor %}
+          </ul>
         </li>
         <li><a href="{% url 'forum:edit_topic' topic.id %}">编辑帖子</a></li>
-    </ul>
-    <h3>正文</h3>
-    <P>{{topic.text}}</P>
-    <div><a href="{% url 'forum:add_topic' topic.id %}">跟贴</a></div>
-    <div>
-        {% for topic in Follow_topics %}
-        <div>
-            <h2><a href="{% url 'forum:topic_detail' topic.id %}">{{ topic.title }}</a></h2>
-            {# 图书的图片 #}
-            <ul>
-                <li>楼主：{{topic.author}}</li>
-                <li>标签：
-                    <ul>
-                        {% for tag in tags %}
-                        <li><a href = "{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li><a href="{% url 'forum:edit_topic' topic.id %}">编辑帖子</a></li>
-            </ul>
-            <h3>正文</h3>
-            <P>{{topic.text}}</P>
-            <div><a href="{% url 'forum:add_topic' topic.id %}">回复</a></div>
-        </div>
-        {% endfor %}
+      </ul>
+      <h3>正文</h3>
+      <p>{{topic.text}}</p>
+      <div><a href="{% url 'forum:add_topic' topic.id %}">回复</a></div>
     </div>
-   
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

@@ -1,11 +1,9 @@
-{% extends "books/base.html" %}
-
-{% block main %}
+{% extends "books/base.html" %} {% block main %}
 <div>
-    <h2 href = "{% url 'users:user_manage' user.id %}">后台管理</h2>
-    <h3>昵称：{{ profile.nickname }}</h3>
-    <p>{{ user.username }}</p>
-    {# 用户头像 #}
-    <p><a href = "{% url 'books:add_book' %}">添加书籍</a></p>
+  <h2 href="{% url 'users:user_manage' user.id %}">后台管理</h2>
+  <h3>昵称：{{ profile.nickname }}</h3>
+  <p>{{ user.username }}</p>
+  {# 用户头像 #}
+  <p><a href="{% url 'books:add_book' %}">添加书籍</a></p>
 </div>
 {% endblock %}

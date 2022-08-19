@@ -1,65 +1,68 @@
-{% extends "books/base.html" %}
-
-{% block main %}
+{% extends "books/base.html" %} {% block main %}
 <a href="{% url 'books:index' %}">Library</a>
 <h3>图书详情</h3>
 <hr />
 <div>
-    <h2>{{ book.title }}</h2>
-    {# 图书的图片 #}
-    <ul>
-        <li>作者：
-            <ul>
-                {% for author in authors %}
-                <li>{{author}}</li>
-                {% endfor %}
-            </ul>
+  <h2>{{ book.title }}</h2>
+  {# 图书的图片 #}
+  <ul>
+    <li>
+      作者：
+      <ul>
+        {% for author in authors %}
+        <li>{{author}}</li>
+        {% endfor %}
+      </ul>
+    </li>
+    <li>语言：{{book.language}}</li>
+    {% if series != None %}
+    <li>
+      系列：<a href="{% url 'books:series_detail' series.id %}">{{series}}</a>
+    </li>
+    {% endif %}
+    <li>
+      标签：
+      <ul>
+        {% for tag in tags %}
+        <li>
+          <a href="{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a>
         </li>
-        <li>语言：{{book.language}}</li>
-        {% if series != None %}
-        <li>系列：<a href="{% url 'books:series_detail' series.id %}">{{series}}</a></li>
-        {% endif %}
-        <li>标签：
-            <ul>
-                {% for tag in tags %}
-                <li><a href = "{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% if la_chapter == 0 %}
-        <li>最新章节：本书暂没有章节</li>    
-        {% else %}
-        <li>最新章节：{{la_chapter}}</li>
-        {% endif %}
-        <li><a href="{% url 'books:edit_book' book.id %}">编辑本书</a></li>
-    </ul>
-    <h3>简介</h3>
-    <P>{{book.intro}}</P>
+        {% endfor %}
+      </ul>
+    </li>
+    {% if la_chapter == 0 %}
+    <li>最新章节：本书暂没有章节</li>
+    {% else %}
+    <li>最新章节：{{la_chapter}}</li>
+    {% endif %}
+    <li><a href="{% url 'books:edit_book' book.id %}">编辑本书</a></li>
+  </ul>
+  <h3>简介</h3>
+  <p>{{book.intro}}</p>
 </div>
 {% include 'books/score.html' with book_id=book.id %}
 <ul>
-    <li>{{book_start.stars0}}</li>
-    <li>{{book_start.stars1}}</li>
-    <li>{{book_start.stars2}}</li>
-    <li>{{book_start.stars3}}</li>
-    <li>{{book_start.stars4}}</li>
-    <li>{{book_start.stars5}}</li>
-    <li>{{book_start.stars6}}</li>
-    <li>{{book_start.stars7}}</li>
-    <li>{{book_start.stars8}}</li>
-    <li>{{book_start.stars9}}</li>
-    <li>{{book_start.stars10}}</li>
+  <li>{{book_start.stars0}}</li>
+  <li>{{book_start.stars1}}</li>
+  <li>{{book_start.stars2}}</li>
+  <li>{{book_start.stars3}}</li>
+  <li>{{book_start.stars4}}</li>
+  <li>{{book_start.stars5}}</li>
+  <li>{{book_start.stars6}}</li>
+  <li>{{book_start.stars7}}</li>
+  <li>{{book_start.stars8}}</li>
+  <li>{{book_start.stars9}}</li>
+  <li>{{book_start.stars10}}</li>
 </ul>
 <hr />
 <h3>章节目录</h3>
 <hr />
 <a href="{% url 'books:add_chapter' book.id%}">添加章节</a>
 <div>
-    {% for chapter in chapters %}
-    <div>
-        <a href="{% url 'books:chapter' book.id chapter.id%}">{{chapter.title}}</a>
-    </div>
-    {% endfor %}
-</div>
+  {% for chapter in chapters %}
+  <div>
+    <a href="{% url 'books:chapter' book.id chapter.id%}">{{chapter.title}}</a>
+  </div>
+  {% endfor %}
 </div>
 {% endblock %}

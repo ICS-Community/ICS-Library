@@ -9,7 +9,9 @@
       标签：
       <ul>
         {% for tag in tags %}
-        <li><a href = "{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a></li>
+        <li>
+          <a href="{% url 'forum:tag_detail' tag.tid %}">{{tag.title}}</a>
+        </li>
         {% endfor %}
       </ul>
     </li>
