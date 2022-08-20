@@ -7,7 +7,7 @@ from interface.models import Tag
 class Book(models.Model):
     # 实际上好吧，中英文字符数量真的不好评价，回头再改吧
     title = models.CharField(max_length=80, verbose_name='书名')
-    cover = models.ImageField(upload_to='cover/', null=True, blank = True, verbose_name='封面') 
+    cover = models.URLField(null=True, blank = True, verbose_name='封面') 
     author =  models.ManyToManyField(User, verbose_name='作者') # 多对多关系
     language = models.CharField(max_length=50, verbose_name='语言')
     intro = models.TextField(verbose_name='简介')
@@ -22,7 +22,7 @@ class Book(models.Model):
 
 class Series(models.Model):
     title = models.CharField(max_length=80, verbose_name='系列名称')
-    cover = models.ImageField(upload_to='cover/', null=True, blank = True, verbose_name='封面') 
+    cover = models.URLField(null=True, blank = True, verbose_name='封面') 
     author =  models.ManyToManyField(User, verbose_name='作者')
     language = models.CharField(max_length=50, verbose_name='语言')
     text = models.TextField(verbose_name='简介')
@@ -55,8 +55,8 @@ class Section(models.Model):
     '''小说分卷，分节信息'''
     c_id = models.OneToOneField('Chapter', verbose_name='对应章节', on_delete=models.CASCADE),
     b_id = models.ForeignKey('Book', verbose_name='分节信息', on_delete=models.CASCADE)
-    number = models.IntegerField(verbose_name='章节号')
-    deep = models.IntegerField(verbose_name='深度')
+    number = models.IntegerField(verbose_name='章节号', default=0)
+    deep = models.IntegerField(verbose_name='深度', default=0)
     def __str__(self):
         return self.b_id + '-' + self.c_id
 
