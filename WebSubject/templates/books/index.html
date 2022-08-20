@@ -1,9 +1,20 @@
 {% extends "books/base.html" %} {% block main %}
-<h2>ICS-Library</h2>
-<hr />
-<h2>书籍列表</h2>
-{% for book in books %}
-<div class="col-md-4">
-  <a href="{% url 'books:book_detail' book.id %}">{{ book.title}}</a>
-</div>
+<header class="container" id="bigwelcome">
+  <hgroup>
+    <h1>轮回书库</h1>
+    <h2>图书馆</h2>
+  </hgroup>
+</header>
+<article class="container">
+  <header>
+    <hgroup>
+      <h2>图书馆</h2>
+      <h3>书籍列表</h3>
+    </hgroup>
+  </header>
+  {% for book in books %}
+  <div>
+    <a href="{% url 'books:book_detail' book.id %}">{{ book.title}}</a>
+  </div>
+</article>
 {% endfor %} {% endblock %}
