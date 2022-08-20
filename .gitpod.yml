@@ -1,14 +1,12 @@
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
   - init: |
-      sudo apt update
-      sudo apt upgrade -y
-      sudo apt install postgresql postgresql-contrib -y
-      pip install django
+      sudo apt update && sudo apt upgrade -y && sudo apt install postgresql postgresql-contrib python3-psycopg2 -y
+      pip install --upgrade pip && pip install django psycopg2
       pg_ctl start
       cd WebSubject && python manage.py makemigrations && python manage.py migrate
     command: |
-      pg_ctl start
+      sudo pg_ctlcluster 12 main start
       cd WebSubject && manage.py runserver
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
