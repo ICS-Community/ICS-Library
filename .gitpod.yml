@@ -3,7 +3,7 @@ tasks:
   - init: |
       sudo apt update && sudo apt upgrade -y && sudo apt install postgresql postgresql-contrib python3-psycopg2 -y
       pip install --upgrade pip && pip install django psycopg2
-      pg_ctl start
+      sudo pg_ctlcluster 12 main start
       cd WebSubject && python manage.py makemigrations && python manage.py migrate
     command: |
       sudo pg_ctlcluster 12 main start
