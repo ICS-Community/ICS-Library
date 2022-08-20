@@ -53,15 +53,16 @@ class Starts(models.Model):
 
 class Section(models.Model):
     '''小说分卷，分节信息'''
+    c_id = models.OneToOneField('Chapter', verbose_name='对应章节', on_delete=models.CASCADE),
     b_id = models.ForeignKey('Book', verbose_name='分节信息', on_delete=models.CASCADE)
-
+    number = models.IntegerField(verbose_name='章节号')
+    deep = models.IntegerField(verbose_name='深度')
+    def __str__(self):
+        return self.b_id + '-' + self.c_id
 
 class Chapter(models.Model):
-    b_id = models.ForeignKey('Book', verbose_name='书籍ID', on_delete=models.CASCADE)
-    number = models.IntegerField(verbose_name='章节号')
     title = models.CharField(max_length=50,verbose_name='章节名')
     content = models.TextField(verbose_name='内容')
-
     def __str__(self):
         return self.title
 
@@ -83,7 +84,7 @@ class Comment(models.Model):
     content = models.TextField(verbose_name='内容')
 
     def __str__(self):
-        return self.b_id.title + '-' + str(self.id)
+        return self.b_id + '-' + str(self.id)
 
 
 
