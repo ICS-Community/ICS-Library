@@ -2,15 +2,25 @@
 tasks:
   - init: |
       sudo apt update
-      sudo apt install postgresql postgresql-contrib
+      sudo apt upgrade -y
+      sudo apt install postgresql postgresql-contrib -y
       pip install django
       cd WebSubject && python manage.py makemigrations && python manage.py migrate
     command: |
       pg_ctl start
       manage.py runserver
 
-
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
   - port: 3000
     onOpen: open-preview
+
+vscode:
+  extensions:
+    - esbenp.prettier-vscode
+    - ms-python.python
+    - VisualStudioExptTeam.vscodeintellicode
+    - dbaeumer.vscode-eslint
+    - formulahendry.auto-rename-tag
+    - kevinkyang.auto-comment-blocks
+    - adpyke.codesnap
