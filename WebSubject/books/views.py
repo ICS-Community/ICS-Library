@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -11,25 +11,43 @@ from .forms import *
 def index(request):
     '''Library主页'''
     books = Book.objects.all()
-    context = {'books':books}
+    context = {'books': books}
     return render(request, 'books/index.html', context)
+
 
 def book_detail(request, book_id):
     '''显示书籍的详细信息'''
     book = get_object_or_404(Book, id=book_id)
-    chapters = book.chapter_set.order_by('number')
+    # sections = book.section_set.order_by('number')
     authors = book.author.all().order_by('username')
     tags = book.tags.all().order_by('title')
     book_start = get_object_or_404(Starts, b_id=book_id)
     series = None
     if book.series != None:
         series = book.series
-    if(len(chapters)==0):
+
+    context = {'book': book, 'authors': authors, 'series': series, 'tags': tags, 'book_start': book_start}
+    return render(request, 'books/book.html', context)
+
+
+def sections_list(request, book_id):
+    sections = Section.objects.filter(b_id = book_id).order_by('number')
+    if(len(sections) == 0):
         la_chapter = 0
     else:
-        la_chapter = chapters[len(chapters)-1]
-    context = {'book':book, 'authors':authors, 'series':series, 'chapters':chapters, 'tags':tags, 'la_chapter':la_chapter, 'book_start':book_start}
-    return render(request, 'books/book.html', context)
+        la_chapter = sections[len(sections)-1].c_id.title
+    section_tree = "last_chapter=" + str(la_chapter)
+    tmpdeep = -1
+    for section in sections:
+        if section.deep > tmpdeep:
+            section_tree += "<ul>"
+        if section.deep < tmpdeep:
+            section_tree += "</ul>"
+        # <a href="http://www.w3school.com.cn">W3School</a>
+        section_tree += "<li><a href=" + reverse('books:chapter', args=[book_id, section.c_id.id]) +" >"  + section.c_id.title + "</a></li>"
+        tmpdeep = section.deep
+    section_tree += "</ul>"
+    return HttpResponse(section_tree)
 
 def series_detail(request, series_id):
     '''显示系列的详细信息'''

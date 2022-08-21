@@ -15,8 +15,9 @@ urlpatterns = [
     path('book/<int:book_id>/<int:chapter_id>/', views.chapter, name='chapter'), # 章节内容页面
     path('add_book/', views.add_book, name='add_book'), # 用于添加书籍的页面
     path('edit_book/<int:book_id>/', views.edit_book, name='edit_book'), # 用于编辑书籍的页面
-    path('add_chapter/<int:book_id>/', views.add_chapter, name='add_chapter'), # 用于添加章节的页面
+    path('add_chapter/<int:book_id>/<int:chapter_id>/<int:mod>/', views.add_chapter, name='add_chapter'), # 用于添加章节的页面
     path('edit_chapter/<int:book_id>/<int:chapter_id>/', views.edit_chapter, name='edit_chapter'), # 用于编辑章节的页面
+    path('section_detail/<int:book_id>/', views.sections_list, name='section_detail'),
 
     # 系列的详细页面
     path('series/<int:series_id>/', views.series_detail, name='series_detail'),
