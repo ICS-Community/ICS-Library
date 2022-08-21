@@ -4,6 +4,12 @@
     display: none;
   }
 </style>
+<script>
+  function buttonwait() {
+    document.getElementById("loginbutton").innerHTML =
+      "<a aria-busy='true'>请稍等</a>";
+  }
+</script>
 <header>
   <div class="container">
     <div class="grid">
@@ -21,7 +27,14 @@
             <a><strong>密码</strong></a>
             <input type="text" name="password" />
           </div>
-          <button name="submit" class="contrast">登录</button>
+          <button
+            id="loginbutton"
+            name="submit"
+            class="contrast"
+            onclick="buttonwait()"
+          >
+            <a>登录</a>
+          </button>
         </form>
       </main>
     </div>
