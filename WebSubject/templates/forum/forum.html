@@ -1,16 +1,21 @@
 {% extends "books/base.html" %} {% block main %}
-<h2>轮回书库-论坛</h2>
-<hr />
-<a href="{% url 'forum:add_ftopic' %}">发帖</a>
-<h2>帖子列表</h2>
-{% for content in contents %}
-<div>
-  <a href="{% url 'forum:topic_detail' content.id %}">{{content}}</a>
-  {% if content.intro == None %}
-  <p>{{content.ffchar}}</p>
-  {% else %}
-  <p>{{content.intro}}</p>
-  {% endif %}
-  <hr />
-</div>
+<header class="container sheader">
+  <hgroup>
+    <h1>轮回书库</h1>
+    <h2>论坛</h2>
+  </hgroup>
+</header>
+<main class="container">
+  <a href="{% url 'forum:add_ftopic' %}" role="button">发帖</a>
+  {% for content in contents %}
+  <div>
+    <a href="{% url 'forum:topic_detail' content.id %}">{{content}}</a>
+    {% if content.intro == None %}
+    <p>{{content.ffchar}}</p>
+    {% else %}
+    <p>{{content.intro}}</p>
+    {% endif %}
+    <hr />
+  </div>
+</main>
 {% endfor %} {% endblock %}
