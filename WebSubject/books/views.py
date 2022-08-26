@@ -147,7 +147,8 @@ def edit_book(request, book_id):
 def add_chapter(request, book_id):
     '''在特定的书籍中添加新的章节'''
     book = get_object_or_404(Book, id=book_id)
-    if request.GET['author'] == 'multiple':is_multiple = True
+    c_id = request.GET['c_id']
+    if c_id != None
     # 检查所有权
     if request.method != 'POST':
         # 未提交数据，创建一个新表单
