@@ -148,7 +148,7 @@ def add_chapter(request, book_id):
     '''在特定的书籍中添加新的章节'''
     book = get_object_or_404(Book, id=book_id)
     c_id = request.GET['c_id']
-    if c_id != None
+    # if c_id != None:
     # 检查所有权
     if request.method != 'POST':
         # 未提交数据，创建一个新表单
@@ -156,12 +156,12 @@ def add_chapter(request, book_id):
 
     else:
         # POST提交的数据，对数据进行处理
+        last_section = None
         form = ChapterForm(data=request.POST)
         if form.is_valid():
-            new_chapter = form.save(commit=False)
-            new_chapter.b_id = book
-            new_chapter.number = book.latest_c_num + 1
-            book.latest_c_num = new_chapter.number
+            new_chapter = form.save()
+            new_section = Section(c_id = new_chapter, b_id = book, deep = last_section.deep, number = last_section.number + 1)
+            book.latest_c_num = new_section.number
             book.save()
             new_chapter.save()
             return HttpResponseRedirect(reverse('books:book_detail',args=[book_id]))

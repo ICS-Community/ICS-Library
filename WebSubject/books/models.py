@@ -46,11 +46,6 @@ class Starts(models.Model):
     def __str__(self):
         return self.b_id.title
 
-
-"""
-建立一个新的模型，用于存储目录结构。
-"""
-
 class Section(models.Model):
     '''小说分卷，分节信息'''
     c_id = models.OneToOneField('Chapter', verbose_name='对应章节', on_delete=models.CASCADE)
