@@ -1,9 +1,0 @@
-<form action="{% url 'books:book_score' book_id %}" method="get">
-  {% csrf_token %}
-  <label class="visuallyhidden" for="id_q">评分:</label>
-  <input type="score" name="score" placeholder="输入0-10的任意整数" id="id_q" />
-  <button type="submit">
-    <i class="icon icon-search"></i>
-    <span class="visuallyhidden">提交</span>
-  </button>
-</form>

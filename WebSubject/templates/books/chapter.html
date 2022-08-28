@@ -1,8 +1,0 @@
-{% extends "books/base.html" %} {% block main %}
-<a href="{% url 'books:book_detail' book.id %}"><h2>{{book.title}}</h2></a>
-<hr />
-<h2>{{chapter.title}}</h2>
-<p>{{chapter.content}}</p>
-<a href="{% url 'books:edit_chapter' book.id chapter.id%}">编辑章节</a>
-
-{% endblock %}
